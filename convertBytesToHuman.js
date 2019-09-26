@@ -8,4 +8,10 @@
 
 function convertBytesToHuman(bytes) {
   // your solution goes here
+  if (typeof(bytes) == "number" && bytes >= 0){
+    return bytes
+  }
+  return false
 }
+
+export default convertBytesToHuman
