@@ -9,9 +9,19 @@
 function convertBytesToHuman(bytes) {
   // your solution goes here
   if (typeof(bytes) == "number" && bytes >= 0){
-    return bytes
+    let output;
+    let prefixes = ' KMGTPE';
+    let i = 0;
+    while (bytes >= 1024 && i <= 4){
+      i++;
+      let double = bytes % 1024 / 1024;
+      bytes = Math.floor(bytes / 1024) + double
+    }
+    let prefix = (i > 0) ? prefixes[i] : ''
+    return `${bytes.toFixed(2)} ${prefix}B`
   }
   return false
 }
 
+//convertBytesToHuman(4210506827776)
 export default convertBytesToHuman

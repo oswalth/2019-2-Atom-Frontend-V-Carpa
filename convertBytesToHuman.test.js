@@ -21,12 +21,13 @@ test('Возвращает false для неправильного типа да
 })
 
 test('Возвращает корректное значение для чисел', () => {
-  expect(convertBytesToHuman(1/0)).toBe(Infinity)
-  expect(convertBytesToHuman(12.35)).toBe(12.35)
-  expect(convertBytesToHuman(Infinity)).toBe(Infinity)
-  expect(convertBytesToHuman(1)).toBe(1)
-  expect(convertBytesToHuman(-1 * -1)).toBe(1)
-  expect(convertBytesToHuman(0 / -1)).toBe(-0)
+  expect(convertBytesToHuman(1084479324)).toBe('1.01 GB')
+  expect(convertBytesToHuman(1024)).toBe('1.00 KB')
+  expect(convertBytesToHuman(1029)).toBe('1.00 KB')
+  expect(convertBytesToHuman(1174)).toBe('1.15 KB')
+  expect(convertBytesToHuman(930)).toBe('930.00 B')
+  expect(convertBytesToHuman(4210506827776)).toBe('3.83 TB')
+  expect(convertBytesToHuman(3249558991642624)).toBe('2.89 PB')
 })
 
 // другая группа проверок
