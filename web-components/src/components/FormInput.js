@@ -1,15 +1,18 @@
 const template = document.createElement('template');
 template.innerHTML = `
     <style>
+        :host {
+            display: inline-block;
+            border: 1px solid rgba(174, 181, 159, 1);
+            
+        }
+
         input {
             border: 0;
             outline: none;
-            width: calc(100% - 2px);
-        }
-
-        :host {
-            display: inline-block;
-            border: 1px solid rgba(25, 25, 25, 0.32);
+            width: 100%;
+            height: 100%;
+            border-color: #999;
         }
     </style>
     <input type="text">
@@ -37,4 +40,4 @@ class FormInput extends HTMLElement {
     }
 }
 
-customElements.define('form-input', FormInput);
+window.customElements.define('form-input', FormInput);
