@@ -57,30 +57,50 @@ class MessageForm extends HTMLElement {
 
         this.$form.addEventListener('submit', this._onSubmit.bind(this));
         this.$form.addEventListener('keypress', this._onKeyPress.bind(this));
+        this.avatar = 'https://sun9-67.userapi.com/c854228/v854228593/11a0f9/ZxcsGQfVitg.jpg'
     }
 
     _onSubmit(event) {
         event.preventDefault();
         if (this.$input.value.length > 0) {
-            let $message = document.createElement('message-item')
-            $message.setAttribute('avatar', 'https://sun9-67.userapi.com/c854228/v854228593/11a0f9/ZxcsGQfVitg.jpg')
-            $message.setAttribute('text', this.$input.value)
-            $message.setAttribute('name', 'Vladimir Carpa')
+            let $message = this.generateMessage()
+            
+
             this.$input.$input.value = '';
             //$message.innerText = this.$input.value;
             this.$messagesList.appendChild($message)
-            console.log(($message))
-            localStorage.setItem($message.$identifier, JSON.stringify($message))
+            var [msgobj, idf] = $message.toObject();
+            console.log((msgobj))
+            console.log((idf))
+
+
+            localStorage.setItem(idf, JSON.stringify(msgobj))
         }
     }
 
+    generateMessage(senderName='Vladimir Carpa', text=this.$input.value, timestamp=null){
+        let message = document.createElement('message-item')
+        if (timestamp){
+            message.setAttribute('timestamp', timestamp)
+        }
+        message.setAttribute('text', text)
+        message.setAttribute('name', senderName)
+        return message;
+    }
+
     connectedCallback(){
-        let storage = [];
+        this.storage = [];
         for (let i=0; i< localStorage.length; i++){
             let key = localStorage.key(i)
             if (!isNaN(key)){
-                this.$messagesList.appendChild(JSON.parse(localStorage.getItem(key)))
+                let msgObj = JSON.parse(localStorage.getItem(key))
+                let $message = this.generateMessage(msgObj.name, msgObj.text, msgObj.timestamp)
+                //this.storage.push(this.generateMessage())
+                //this.$messagesList.appendChild()
+                console.log($message)
+                this.$messagesList.appendChild($message)
             }
+
         }
 
 

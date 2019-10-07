@@ -35,6 +35,10 @@ template.innerHTML = `
         
     }
 
+    .message #name{
+        display: none;
+    }
+
 
 
 </style>
@@ -42,7 +46,6 @@ template.innerHTML = `
     <label id='name'></label>
     <label id='text'></label>
     <label id='time'></label>
-    <label id='identifier'></label>
     <img id='avatar'>
 </div>
 `;
@@ -58,6 +61,7 @@ class MessageItem extends HTMLElement {
         this.$name = this._shadowRoot.getElementById('name')
         this.$text = this._shadowRoot.getElementById('text')
         this.$timestamp = this._shadowRoot.getElementById('time')
+        //this.$identifier = this._shadowRoot.getElementById('identifier')
 
     
     }
@@ -71,6 +75,10 @@ class MessageItem extends HTMLElement {
             case 'text':
                 this._text = newValue;
                 break;
+            case 'name':
+                this._name = newValue;
+                break;
+            
         }
         this._renderMessage();
     }
@@ -83,14 +91,24 @@ class MessageItem extends HTMLElement {
         this._renderMessage();
     }
 
+    toObject(){
+        this.messageObject = {
+            'name': this.$name.innerHTML,
+            'text': this.$text.innerHTML,
+            'timestamp': this.$timestamp.innerHTML,
+        }
+        return [this.messageObject, this.identifier];
+    }
+
     _renderMessage(){
+        this.$name.innerHTML = this._name
         this.$text.innerHTML = this._text
         let time = new Date()
         this.$timestamp.innerHTML = time.toLocaleString('ru', {
             hour: 'numeric',
             minute: 'numeric',
           });
-        this.$identifier = Date.parse(time) + (Math.random() * 1000)
+        this.identifier = Date.parse(time) + (Math.random() * 1000)
     }
 
 }
