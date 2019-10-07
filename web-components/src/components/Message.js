@@ -6,7 +6,7 @@ template.innerHTML = `
         padding: 8px;
     }
 
-    .msg{
+    .message{
         display: flex;
         flex-flow: column nowrap;
         flex-basis: 1;
@@ -14,7 +14,7 @@ template.innerHTML = `
         
     }
 
-    .msg #text{
+    .message #text{
         color: var(--secondary-color);
         padding: 4px 8px;
         align-self: flex-end;
@@ -23,9 +23,10 @@ template.innerHTML = `
         background-color: #689CD2;
         border-radius: .4em;
         color: #fff;
+        max-width: 80%;
     }
 
-    .msg #time{
+    .message #time{
         font-size: 10px;
         padding: 4px 8px;
 
@@ -37,14 +38,13 @@ template.innerHTML = `
 
 
 </style>
-<div class="msg">
-</div>
+<div class="message">
     <label id='name'></label>
     <label id='text'></label>
     <label id='time'></label>
     <label id='identifier'></label>
     <img id='avatar'>
-
+</div>
 `;
 
 class MessageItem extends HTMLElement {
@@ -53,7 +53,7 @@ class MessageItem extends HTMLElement {
         this._shadowRoot = this.attachShadow({ mode: 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
 
-        this.$message = this._shadowRoot.querySelector('msg')
+        this.$message = this._shadowRoot.querySelector('message')
 
         this.$name = this._shadowRoot.getElementById('name')
         this.$text = this._shadowRoot.getElementById('text')

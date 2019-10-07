@@ -67,14 +67,14 @@ class MessageForm extends HTMLElement {
             $message.setAttribute('text', this.$input.value)
             $message.setAttribute('name', 'Vladimir Carpa')
             this.$input.$input.value = '';
-            $message.innerText = this.$input.value;
-            console.log(JSON.stringify($message))
+            //$message.innerText = this.$input.value;
             this.$messagesList.appendChild($message)
+            console.log(($message))
             localStorage.setItem($message.$identifier, JSON.stringify($message))
         }
     }
 
-    /*connectedCallback(){
+    connectedCallback(){
         let storage = [];
         for (let i=0; i< localStorage.length; i++){
             let key = localStorage.key(i)
@@ -84,7 +84,7 @@ class MessageForm extends HTMLElement {
         }
 
 
-    }*/
+    }
 
     _onKeyPress(event) {
         if (event.keyCode == 13) {
