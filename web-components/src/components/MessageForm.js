@@ -2,21 +2,13 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
 
-        *{
-            margin: 0;
-            padding: 0;
-            --fontNormalSize: 1.1em;
-            --fontMinSize: 0.95em;
-            --fontMaxSize: 1.2em;
-            --fontMinMinSize: 0.8em;
-            box-sizing: border-box;
-        }
+        
 
         :host {
             width: 100%;
             height: 100%;
             font-family: sans-serif;
-            margin: 0 auto;
+            background-color: #191919;
             display: flex;
             flex-direction: column;
            
@@ -26,7 +18,6 @@ template.innerHTML = `
             width: 100%;
             display: flex;
             flex: auto;
-            flex-wrap: wrap;
             flex-direction: column-reverse;
             align-content: flex-end;
             z-index: 0;
@@ -34,12 +25,12 @@ template.innerHTML = `
         }
 
         .messagesList{
-            display: block;
             width: 100%;
-            color: #000;
             display: flex;
             flex-wrap: wrap;
             align-content: flex-end;
+            flex-direction: column;
+
         }
 
         .message-item{
@@ -50,10 +41,15 @@ template.innerHTML = `
 
         .inputFrom {
             width: 100%;
-            position: fixed;
-            bottom: 0px;
+            background-color: #191919;
+            outline: 1px solid #242424;
+            box-shadow: 0 0 2px 0 #151716;
             border-color: #999;
             z-index: 1;
+        }
+
+        ::-webkit-scrollbar{
+            width: 0px;
         }
 
 
@@ -92,6 +88,7 @@ class MessageForm extends HTMLElement {
         this.$form.addEventListener('submit', this._onSubmit.bind(this));
         this.$form.addEventListener('keypress', this._onKeyPress.bind(this));
         this.avatar = 'https://sun9-67.userapi.com/c854228/v854228593/11a0f9/ZxcsGQfVitg.jpg'
+        this.msgId = 0;
     }
 
     _onSubmit(event) {
@@ -117,19 +114,27 @@ class MessageForm extends HTMLElement {
     generateMessage(senderName='Vladimir Carpa', text=this.$input.value, timestamp=null){
         let message = document.createElement('message-item')
         if (timestamp){
-            message.setAttribute('timestamp', timestamp)
+            message.setAttribute('time', timestamp)
         }
         message.setAttribute('text', text)
         message.setAttribute('name', senderName)
+        
         return message;
     }
     
     connectedCallback(){
-        this.storage = [];
+        let keys = [];
         for (let i=0; i< localStorage.length; i++){
             let key = localStorage.key(i)
             if (!isNaN(key)){
+                keys.push(key)
+            }
+        }
+        keys.sort();
+        console.log(keys)
+        for (let key of keys){
                 let msgObj = JSON.parse(localStorage.getItem(key))
+                
                 let $message = this.generateMessage(msgObj.name, msgObj.text, msgObj.timestamp)
                 //this.storage.push(this.generateMessage())
                 //this.$messagesList.appendChild()
@@ -139,7 +144,7 @@ class MessageForm extends HTMLElement {
         }
 
 
-    }
+    
 
     _onKeyPress(event) {
         if (event.keyCode == 13) {

@@ -6,43 +6,39 @@ template.innerHTML = `
         padding: 8px;
     }
 
+
+    
     .message{
-        display: inline-block;
-        word-break: break-all;
+        display: flex;
+        flex-flow: column nowrap;
         margin-right: 10px;
+        float: right;
         border-radius: 15px;
         padding: 10px;
-        text-align: justify;
+        max-width: 80%;
+        word-break: break-word;
     }
-    .self{
-        float: right;
-    }
-    .message #text{
-        color: var(--secondary-color);
+
+   .message .text{
         padding: 4px 8px;
-        align-self: flex-end;
-        word-wrap: break-word;
-        display: inline-block;
         background-color: #689CD2;
         border-radius: .4em;
         color: #fff;
-        max-width: 80%;
-    }
+   }
 
-    .message #time{
+
+    .message .time{
         font-size: 10px;
         padding: 4px 8px;
-
         color: #999;
         align-self: flex-end;
-        
     }
 
-    .message #name{
+    .message .name{
         display: none;
     }
 
-
+    
 
 </style>
 <div class="message">

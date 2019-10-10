@@ -14,6 +14,7 @@ template.innerHTML = `
             width: 100%;
             height: 100%;
             border-color: #999;
+            background-color: #999;
         }
     </style>
     <input type="text">
