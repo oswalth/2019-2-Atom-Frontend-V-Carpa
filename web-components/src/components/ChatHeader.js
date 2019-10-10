@@ -21,7 +21,7 @@ template.innerHTML = `
 `;
 
 
-class ChatBox extends HTMLElement {
+class ChatHeader extends HTMLElement {
     constructor () {
         super();
         this._shadowRoot = this.attachShadow({ mode: 'open' });
@@ -37,4 +37,4 @@ class ChatBox extends HTMLElement {
 
 }
 
-customElements.define('chat-box', ChatBox);
+customElements.define('chat-header', ChatHeader);

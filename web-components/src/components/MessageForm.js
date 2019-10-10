@@ -1,48 +1,82 @@
 const template = document.createElement('template');
 template.innerHTML = `
     <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            --fontNormalSize: 1.1em;
+            --fontMinSize: 0.95em;
+            --fontMaxSize: 1.2em;
+            --fontMinMinSize: 0.8em;
+            box-sizing: border-box;
+        }
+
         :host {
-            left: 5%;
-            top: 50px;
-            height: 90%;
+            width: 100%;
+            height: 100%;
             font-family: sans-serif;
-            position: fixed;
-            width: 90%;
             margin: 0 auto;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
            
         }
         
-        
-        .messagesList{
+        .chat {
+            width: 100%;
             display: flex;
-            color: #000;
+            flex: auto;
+            flex-wrap: wrap;
+            flex-direction: column-reverse;
+            align-content: flex-end;
+            z-index: 0;
+            overflow-y: auto;
         }
 
-        form-input {
-            height: 2%;
-            width: 60%;
+        .messagesList{
+            display: block;
+            width: 100%;
+            color: #000;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-end;
+        }
+
+        .message-item{
+            box-sizing: border-box;
+            width: 100%;
+            padding: 0 10px 20px 10px;
+        }
+
+        .inputFrom {
+            width: 100%;
             position: fixed;
             bottom: 0px;
-            left: 20%;
             border-color: #999;
-    
+            z-index: 1;
         }
 
-        .result {
-            color: red;
-        }
 
         input[type=submit] {
             visibility: visible;
         }
     </style>
     
-    <form>
-        <div class="result"></div>
-        <form-input name="message-text" placeholder="Message"></form-input>
-    </form>
-    <div id='messagesList'></div>
+    <div class='header'>
+        <chat-header>
+        </chat-header>
+    </div>
+    <div class='chat'>
+        <div class='messagesList'>
+        </div>
+    </div>
+    <div class='inputForm'>
+        <form>
+            <div class="result"></div>
+            <form-input name="message-text" placeholder="Введите сообщеине"></form-input>
+        </form>
+    </div>
+
 `;
 
 class MessageForm extends HTMLElement {
@@ -51,9 +85,9 @@ class MessageForm extends HTMLElement {
         this._shadowRoot = this.attachShadow({ mode: 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
         this.$form = this._shadowRoot.querySelector('form');
+
         this.$input = this._shadowRoot.querySelector('form-input');
-        //this.$message = this._shadowRoot.querySelector('.result');
-        this.$messagesList = this._shadowRoot.getElementById('messagesList')
+        this.$messagesList = this._shadowRoot.querySelector('.messagesList')
 
         this.$form.addEventListener('submit', this._onSubmit.bind(this));
         this.$form.addEventListener('keypress', this._onKeyPress.bind(this));
@@ -61,7 +95,9 @@ class MessageForm extends HTMLElement {
     }
 
     _onSubmit(event) {
+        
         event.preventDefault();
+        
         if (this.$input.value.length > 0) {
             let $message = this.generateMessage()
             
@@ -87,7 +123,7 @@ class MessageForm extends HTMLElement {
         message.setAttribute('name', senderName)
         return message;
     }
-
+    
     connectedCallback(){
         this.storage = [];
         for (let i=0; i< localStorage.length; i++){
@@ -97,7 +133,6 @@ class MessageForm extends HTMLElement {
                 let $message = this.generateMessage(msgObj.name, msgObj.text, msgObj.timestamp)
                 //this.storage.push(this.generateMessage())
                 //this.$messagesList.appendChild()
-                console.log($message)
                 this.$messagesList.appendChild($message)
             }
 

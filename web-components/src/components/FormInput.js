@@ -2,9 +2,10 @@ const template = document.createElement('template');
 template.innerHTML = `
     <style>
         :host {
-            display: inline-block;
+            display: flex;
+            flex-direction: row;
             border: 1px solid rgba(174, 181, 159, 1);
-            
+            height: 50px;
         }
 
         input {
