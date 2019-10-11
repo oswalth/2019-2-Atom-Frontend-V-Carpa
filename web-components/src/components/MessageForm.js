@@ -8,14 +8,14 @@ template.innerHTML = `
             width: 100%;
             height: 100%;
             font-family: sans-serif;
-            background-color: #191919;
+            background-color: #CFD0D1 ;
             display: flex;
             flex-direction: column;
         }
 
         .header{
             width: 100%;
-            background-color: #689CD2;
+            background-color: #29384B;
             z-index: 1;
         }
         
@@ -46,10 +46,8 @@ template.innerHTML = `
 
         .inputFrom {
             width: 100%;
-            background-color: #191919;
-            outline: 1px solid #242424;
-            box-shadow: 0 0 2px 0 #151716;
-            border-color: #999;
+            background-color: #F7F8FA;
+            
             z-index: 1;
         }
 

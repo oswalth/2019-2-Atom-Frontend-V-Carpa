@@ -13,13 +13,14 @@ template.innerHTML = `
         font-family: sans-serif;
         align-items: center;
         justify-content: center;
+        position: relative;
     }
 
     .backButton{
         height: 30px;
         width: 30px;
         margin: 0px 15px;
-        background: url(https://image.flaticon.com/icons/svg/159/159769.svg)
+        background: url(https://image.flaticon.com/icons/svg/156/156887.svg)
     }
 
     .chatInfo{
@@ -55,7 +56,7 @@ template.innerHTML = `
         margin: 5px 15px;
         background: url(https://image.flaticon.com/icons/svg/149/149309.svg)
     }
-
+    
     .settingsButton{
         height: 20px;
         width: 20px;
@@ -64,19 +65,21 @@ template.innerHTML = `
     }
 
     
+
+
+
 </style>
 <div class='backButton'></div>
 <div class='chatInfo'>
     <div class='avatar'></div>
-    <div class='senderInfo'>
+    <div class='senderInfo'> 
         <div class='name'>Vladimir C.</div>
         <div class='lastTime'>last seen at 21:00</div>
     </div>
 </div>
 <div class='searchButton'></div>
+
 <div class='settingsButton'>
-    <div class='Info'></div>
-    <div class='Mute'></div>
 </div>
 `;
 

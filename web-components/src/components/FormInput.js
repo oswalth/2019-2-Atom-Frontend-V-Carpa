@@ -4,10 +4,10 @@ template.innerHTML = `
         :host {
             display: flex;
             flex-direction: row;
-            border: 1px solid rgba(174, 181, 159, 1);
+           
             height: 50px;
             box-sizing: border-box;
-            background-color: #689CD2;
+            background-color: #F7F8FA;
         }
 
         input {
@@ -15,7 +15,7 @@ template.innerHTML = `
             outline: 0;
             width: 100%;
             height: 100%;
-            border-color: #689CD2;
+            
             background-color: transparent;
         }
 

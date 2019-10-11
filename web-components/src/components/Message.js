@@ -21,7 +21,7 @@ template.innerHTML = `
 
    .message .text{
         padding: 4px 8px;
-        background-color: #689CD2;
+        background-color: #29384B;
         border-radius: .4em;
         color: #fff;
    }
