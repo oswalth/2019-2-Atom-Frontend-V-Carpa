@@ -11,7 +11,12 @@ template.innerHTML = `
             background-color: #191919;
             display: flex;
             flex-direction: column;
-           
+        }
+
+        .header{
+            width: 100%;
+            background-color: #689CD2;
+            z-index: 1;
         }
         
         .chat {
@@ -52,6 +57,7 @@ template.innerHTML = `
             width: 0px;
         }
 
+        
 
         input[type=submit] {
             visibility: visible;

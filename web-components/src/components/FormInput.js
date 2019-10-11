@@ -6,18 +6,37 @@ template.innerHTML = `
             flex-direction: row;
             border: 1px solid rgba(174, 181, 159, 1);
             height: 50px;
+            box-sizing: border-box;
+            background-color: #689CD2;
         }
 
         input {
             border: 0;
-            outline: none;
+            outline: 0;
             width: 100%;
             height: 100%;
-            border-color: #999;
-            background-color: #999;
+            border-color: #689CD2;
+            background-color: transparent;
+        }
+
+        .clip {
+            height: 100%;
+            width: 40px;
+            margin: 5px 15px;
+            background: url(https://image.flaticon.com/icons/svg/116/116312.svg)
+        }
+
+        .send {
+            height: 100%;
+            width: 40px;
+            margin: 5px 15px;
+            background: url(https://image.flaticon.com/icons/svg/309/309395.svg)
         }
     </style>
+
+    <div class='clip'></div>
     <input type="text">
+    <div class='send'></div>
 `;
 
 class FormInput extends HTMLElement {
