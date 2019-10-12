@@ -90,7 +90,6 @@ class ChatHeader extends HTMLElement {
     super();
     this._shadowRoot = this.attachShadow({ mode: 'open' });
     this._shadowRoot.appendChild(template.content.cloneNode(true));
-    this.$messageList = this._shadowRoot.querySelector('div');
   }
 }
 
