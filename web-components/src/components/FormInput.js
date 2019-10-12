@@ -5,7 +5,6 @@ template.innerHTML = `
         :host {
             display: flex;
             flex-direction: row;
-           
             height: 50px;
             box-sizing: border-box;
             background-color: #F7F8FA;
@@ -24,14 +23,16 @@ template.innerHTML = `
             height: 32px;
             width: 40px;
             margin: 5px 15px;
-            background: url(https://image.flaticon.com/icons/svg/116/116312.svg)
+            background: url(https://image.flaticon.com/icons/svg/116/116312.svg);
+            background-repeat: no-repeat;
         }
 
         .send {
             height: 32px;
             width: 40px;
             margin: 5px 15px;
-            background: url(https://image.flaticon.com/icons/svg/309/309395.svg)
+            background: url(https://image.flaticon.com/icons/svg/309/309395.svg);
+            background-repeat: no-repeat;
         }
     </style>
 
