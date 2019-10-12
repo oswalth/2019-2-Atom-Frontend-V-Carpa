@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-const template = document.createElement('template')
+const template = document.createElement('template');
 template.innerHTML = `
     <style>
 
@@ -78,80 +78,73 @@ template.innerHTML = `
         </form>
     </div>
 
-`
+`;
 
 class MessageForm extends HTMLElement {
-    constructor() {
-        super()
-        this._shadowRoot = this.attachShadow({ mode: 'open' })
-        this._shadowRoot.appendChild(template.content.cloneNode(true))
-        this.$form = this._shadowRoot.querySelector('form')
+  constructor() {
+    super();
+    this._shadowRoot = this.attachShadow({ mode: 'open' });
+    this._shadowRoot.appendChild(template.content.cloneNode(true));
+    this.$form = this._shadowRoot.querySelector('form');
 
-        this.$input = this._shadowRoot.querySelector('form-input')
-        this.$messagesList = this._shadowRoot.querySelector('.messagesList')
+    this.$input = this._shadowRoot.querySelector('form-input');
+    this.$messagesList = this._shadowRoot.querySelector('.messagesList');
 
-        this.$form.addEventListener('submit', this._onSubmit.bind(this))
-        this.$form.addEventListener('keypress', this._onKeyPress.bind(this))
-        this.avatar = 'https://sun9-67.userapi.com/c854228/v854228593/11a0f9/ZxcsGQfVitg.jpg'
-        this.msgId = 0
+    this.$form.addEventListener('submit', this._onSubmit.bind(this));
+    this.$form.addEventListener('keypress', this._onKeyPress.bind(this));
+    this.avatar = 'https://sun9-67.userapi.com/c854228/v854228593/11a0f9/ZxcsGQfVitg.jpg';
+    this.msgId = 0;
+  }
+
+  _onSubmit(event) {
+    event.preventDefault();
+    if (this.$input.value.length > 0) {
+      const $message = this.generateMessage();
+      this.$input.$input.value = '';
+      // $message.innerText = this.$input.value;
+      this.$messagesList.appendChild($message);
+      const [msgobj, idf] = $message.toObject();
+      localStorage.setItem(idf, JSON.stringify(msgobj));
     }
+  }
 
-    _onSubmit(event) {
-        
-        event.preventDefault()
-        
-        if (this.$input.value.length > 0) {
-            const $message = this.generateMessage()
-            
-
-            this.$input.$input.value = ''
-            // $message.innerText = this.$input.value;
-            this.$messagesList.appendChild($message)
-            const [msgobj, idf] = $message.toObject()
-            localStorage.setItem(idf, JSON.stringify(msgobj))
-        }
+  generateMessage(senderName = 'Vladimir Carpa', text = this.$input.value, timestamp = null) {
+    const message = document.createElement('message-item');
+    if (timestamp) {
+      message.setAttribute('time', timestamp);
     }
+    message.setAttribute('text', text);
+    message.setAttribute('name', senderName);
 
-    generateMessage(senderName='Vladimir Carpa', text=this.$input.value, timestamp=null){
-        const message = document.createElement('message-item')
-        if (timestamp){
-            message.setAttribute('time', timestamp)
-        }
-        message.setAttribute('text', text)
-        message.setAttribute('name', senderName)
-        
-        return message
+    return message;
+  }
+
+  connectedCallback() {
+    const keys = [];
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      // eslint-disable-next-line no-restricted-globals
+      if (!isNaN(key)) {
+        keys.push(key);
+      }
     }
-    
-    connectedCallback(){
-        const keys = []
-        // eslint-disable-next-line no-plusplus
-        for (let i=0; i< localStorage.length; i++){
-            const key = localStorage.key(i)
-            if (!isNaN(key)){
-                keys.push(key)
-            }
-        }
-        keys.sort()
-        for (const key of keys){
-            const msgObj = JSON.parse(localStorage.getItem(key))
-                
-            const $message = this.generateMessage(msgObj.name, msgObj.text, msgObj.timestamp)
-            this.$messagesList.appendChild($message)
-            }
+    keys.sort();
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key of keys) {
+      const msgObj = JSON.parse(localStorage.getItem(key));
 
-        }
-
-
-    
-
-    _onKeyPress(event) {
-        if (event.keyCode === 13) {
-            this.$form.dispatchEvent(new Event('submit'))
-            
-        }
+      const $message = this.generateMessage(msgObj.name, msgObj.text, msgObj.timestamp);
+      this.$messagesList.appendChild($message);
     }
+  }
 
+
+  _onKeyPress(event) {
+    if (event.keyCode === 13) {
+      this.$form.dispatchEvent(new Event('submit'));
+    }
+  }
 }
 
-customElements.define('message-form', MessageForm)
+customElements.define('message-form', MessageForm);
