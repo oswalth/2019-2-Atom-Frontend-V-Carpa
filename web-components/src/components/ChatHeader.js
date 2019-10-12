@@ -1,4 +1,5 @@
-const template = document.createElement('template');
+/* eslint-disable no-underscore-dangle */
+const template = document.createElement('template')
 template.innerHTML = `
 <style>
     *{
@@ -81,14 +82,14 @@ template.innerHTML = `
 
 <div class='settingsButton'>
 </div>
-`;
+`
 
 
 class ChatHeader extends HTMLElement {
     constructor () {
-        super();
-        this._shadowRoot = this.attachShadow({ mode: 'open' });
-        this._shadowRoot.appendChild(template.content.cloneNode(true));
+        super()
+        this._shadowRoot = this.attachShadow({ mode: 'open' })
+        this._shadowRoot.appendChild(template.content.cloneNode(true))
 
         
         this.$messageList = this._shadowRoot.querySelector('div')
@@ -100,4 +101,4 @@ class ChatHeader extends HTMLElement {
 
 }
 
-customElements.define('chat-header', ChatHeader);
+customElements.define('chat-header', ChatHeader)

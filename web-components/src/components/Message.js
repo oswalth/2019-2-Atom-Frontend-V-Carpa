@@ -1,4 +1,5 @@
-const template = document.createElement('template');
+/* eslint-disable no-underscore-dangle */
+const template = document.createElement('template')
 template.innerHTML = `
 <style>
     :host {
@@ -46,50 +47,51 @@ template.innerHTML = `
     <div class='text'></div>
     <div class='time'></div>
 </div>
-`;
+`
 
 class MessageItem extends HTMLElement {
     constructor () {
-        super();
-        this._shadowRoot = this.attachShadow({ mode: 'open' });
-        this._shadowRoot.appendChild(template.content.cloneNode(true));
+        super()
+        this._shadowRoot = this.attachShadow({ mode: 'open' })
+        this._shadowRoot.appendChild(template.content.cloneNode(true))
 
         this.$message = this._shadowRoot.querySelector('.message')
 
         this.$name = this._shadowRoot.querySelector('.name')
         this.$text = this._shadowRoot.querySelector('.text')
         this.$timestamp = this._shadowRoot.querySelector('.time')
-        //this.$identifier = this._shadowRoot.getElementById('identifier')
+        // this.$identifier = this._shadowRoot.getElementById('identifier')
 
     
     }
 
     static get observedAttributes() {
-        return ['name', 'text', 'timestamp'];
+        return ['name', 'text', 'timestamp']
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
+        // eslint-disable-next-line default-case
         switch(name){
             case 'text':
-                this._text = newValue;
-                break;
+                this._text = newValue
+                break
             case 'name':
-                this._name = newValue;
-                break;
+                this._name = newValue
+                break
             case 'timestamp':
-                this._timestamp = newValue;
-                break;
+                this._timestamp = newValue
+                break
             
         }
-        this._renderMessage();
+        this._renderMessage()
     }
 
     connectedCallback() {
         if(!this.hasAttribute('text')) {
-            this.setAttribute('text', 'placeholder');
+            this.setAttribute('text', 'placeholder')
         }
 
-        this._renderMessage();
+        this._renderMessage()
     }
 
     toObject(){
@@ -98,20 +100,20 @@ class MessageItem extends HTMLElement {
             'text': this.$text.innerHTML,
             'timestamp': this.$timestamp.innerHTML,
         }
-        return [this.messageObject, this.identifier];
+        return [this.messageObject, this.identifier]
     }
 
     _renderMessage(){
         this.$name.innerHTML = this._name
         this.$text.innerHTML = this._text
-        let time = new Date()
+        const time = new Date()
         if (this._timestamp){
             this.$timestamp = this._timestamp
         } else {
             this.$timestamp.innerHTML = time.toLocaleString('ru', {
                 hour: 'numeric',
                 minute: 'numeric',
-              });
+              })
         }
        
         this.identifier = Date.parse(time) + (Math.random() * 1000)
@@ -119,4 +121,4 @@ class MessageItem extends HTMLElement {
 
 }
 
-customElements.define('message-item', MessageItem);
+customElements.define('message-item', MessageItem)
