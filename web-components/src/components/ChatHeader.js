@@ -4,8 +4,6 @@ template.innerHTML = `
 <style>
     *{
         box-sizing: border-box;
-        margin: 0;
-        padding: 0;
     }
 
     :host {
@@ -20,7 +18,7 @@ template.innerHTML = `
     .backButton{
         height: 30px;
         width: 30px;
-        margin: 0px 15px;
+        margin: 5px 15px;
         background: url(https://image.flaticon.com/icons/svg/156/156887.svg)
     }
 
