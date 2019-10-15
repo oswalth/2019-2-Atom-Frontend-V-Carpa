@@ -74,7 +74,7 @@ template.innerHTML = `
     <div class='inputForm'>
         <form>
             <div class="result"></div>
-            <form-input name="message-text" placeholder="Введите сообщеине"></form-input>
+            <form-input name="message-text" placeholder="Message..."></form-input>
         </form>
     </div>
 
