@@ -93,7 +93,7 @@ class MessageForm extends HTMLElement {
     this.$form.addEventListener('submit', this._onSubmit.bind(this));
     this.$form.addEventListener('keypress', this._onKeyPress.bind(this));
     this.avatar = 'https://sun9-67.userapi.com/c854228/v854228593/11a0f9/ZxcsGQfVitg.jpg';
-    this.msgId = 0;
+    this.$dialogueID = 0;
   }
 
   _onSubmit(event) {
@@ -103,8 +103,9 @@ class MessageForm extends HTMLElement {
       this.$input.$input.value = '';
       // $message.innerText = this.$input.value;
       this.$messagesList.appendChild($message);
-      const [msgobj, idf] = $message.toObject();
-      localStorage.setItem(idf, JSON.stringify(msgobj));
+      const msgobj = $message.toObject();
+      this.messages.push(msgobj);
+      localStorage.setItem(`dialogue#${this.$dialogueID}`, JSON.stringify(this.messages));
     }
   }
 
@@ -120,23 +121,15 @@ class MessageForm extends HTMLElement {
   }
 
   connectedCallback() {
-    const keys = [];
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      // eslint-disable-next-line no-restricted-globals
-      if (!isNaN(key)) {
-        keys.push(key);
-      }
+    if (`dialogue#${this.$dialogueID}` in localStorage) {
+      this.messages = JSON.parse(localStorage.getItem(`dialogue#${this.$dialogueID}`));
+    } else {
+      this.messages = [];
     }
-    keys.sort();
-    // eslint-disable-next-line no-restricted-syntax
-    for (const key of keys) {
-      const msgObj = JSON.parse(localStorage.getItem(key));
-
-      const $message = this.generateMessage(msgObj.name, msgObj.text, msgObj.timestamp);
+    this.messages.forEach((msg) => {
+      const $message = this.generateMessage(msg.name, msg.text, msg.timestamp)
       this.$messagesList.appendChild($message);
-    }
+    });
   }
 
 

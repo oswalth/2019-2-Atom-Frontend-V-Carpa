@@ -97,7 +97,7 @@ class MessageItem extends HTMLElement {
       text: this.$text.innerHTML,
       timestamp: this.$timestamp.innerHTML,
     };
-    return [this.messageObject, this.identifier];
+    return this.messageObject;
   }
 
   _renderMessage() {
