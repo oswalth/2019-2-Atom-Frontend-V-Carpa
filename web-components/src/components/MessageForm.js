@@ -127,7 +127,7 @@ class MessageForm extends HTMLElement {
       this.messages = [];
     }
     this.messages.forEach((msg) => {
-      const $message = this.generateMessage(msg.name, msg.text, msg.timestamp)
+      const $message = this.generateMessage(msg.name, msg.text, msg.timestamp);
       this.$messagesList.appendChild($message);
     });
   }
