@@ -19,7 +19,7 @@ template.innerHTML = `
         height: 30px;
         width: 30px;
         margin: 5px 15px;
-        background: url(https://image.flaticon.com/icons/svg/130/130918.svg)
+        background: url(https://image.flaticon.com/icons/svg/130/130918.svg) no-repeat center center;
     }
 
     .messenger{
@@ -32,7 +32,8 @@ template.innerHTML = `
         height: 20px;
         width: 20px;
         margin: 5px 15px;
-        background: url(https://image.flaticon.com/icons/svg/149/149309.svg)
+        padding-right: 40px;
+        background: url(https://image.flaticon.com/icons/svg/149/149309.svg) no-repeat center center;
     }  
 </style>
 

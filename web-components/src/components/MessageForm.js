@@ -89,11 +89,11 @@ class MessageForm extends HTMLElement {
 
     this.$input = this._shadowRoot.querySelector('form-input');
     this.$messagesList = this._shadowRoot.querySelector('.messagesList');
+    this.$header = this._shadowRoot.querySelector('chat-header');
 
     this.$form.addEventListener('submit', this._onSubmit.bind(this));
     this.$form.addEventListener('keypress', this._onKeyPress.bind(this));
     this.avatar = 'https://sun9-67.userapi.com/c854228/v854228593/11a0f9/ZxcsGQfVitg.jpg';
-    this.$dialogueID = 0;
   }
 
   _onSubmit(event) {
@@ -101,33 +101,37 @@ class MessageForm extends HTMLElement {
     if (this.$input.value.length > 0) {
       const $message = this.generateMessage();
       this.$input.$input.value = '';
-      // $message.innerText = this.$input.value;
       this.$messagesList.appendChild($message);
       const msgobj = $message.toObject();
       this.messages.push(msgobj);
-      localStorage.setItem(`dialogue#${this.$dialogueID}`, JSON.stringify(this.messages));
+      localStorage.setItem(`dialogue#${this.dialogueID}-${this.dialogueName}`, JSON.stringify(this.messages));
+      this.$input.dispatchEvent(new Event('onSubmit'));
     }
   }
 
-  generateMessage(senderName = 'Vladimir Carpa', text = this.$input.value, timestamp = null) {
-    const message = document.createElement('message-item');
+  generateMessage(senderName = 'Vladimir Carpa', message = this.$input.value, timestamp = null) {
+    const messageItem = document.createElement('message-item');
     if (timestamp) {
-      message.setAttribute('time', timestamp);
+      messageItem.setAttribute('timestamp', timestamp);
     }
-    message.setAttribute('text', text);
-    message.setAttribute('name', senderName);
+    messageItem.setAttribute('message', message);
+    messageItem.setAttribute('name', senderName);
 
-    return message;
+    return messageItem;
   }
 
-  connectedCallback() {
-    if (`dialogue#${this.$dialogueID}` in localStorage) {
-      this.messages = JSON.parse(localStorage.getItem(`dialogue#${this.$dialogueID}`));
+  clrscr() {
+    this.$messagesList.innerHTML = '';
+  }
+
+  render() {
+    if (`dialogue#${this.dialogueID}-${this.dialogueName}` in localStorage) {
+      this.messages = JSON.parse(localStorage.getItem(`dialogue#${this.dialogueID}-${this.dialogueName}`));
     } else {
       this.messages = [];
     }
     this.messages.forEach((msg) => {
-      const $message = this.generateMessage(msg.name, msg.text, msg.timestamp);
+      const $message = this.generateMessage(msg.name, msg.message, msg.timestamp);
       this.$messagesList.appendChild($message);
     });
   }
@@ -136,6 +140,22 @@ class MessageForm extends HTMLElement {
   _onKeyPress(event) {
     if (event.keyCode === 13) {
       this.$form.dispatchEvent(new Event('submit'));
+    }
+  }
+
+  static get observedAttributes() {
+    return ['dialoguename', 'dialogueid'];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    // eslint-disable-next-line default-case
+    switch (name) {
+      case 'dialoguename':
+        this.dialogueName = newValue;
+        break;
+      case 'dialogueid':
+        this.dialogueID = newValue;
+        break;
     }
   }
 }

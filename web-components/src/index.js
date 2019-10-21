@@ -7,3 +7,5 @@ import './components/ChatHeader';
 import './components/DialogueForm';
 import './components/DialoguesHeader';
 import './components/Dialogue';
+import './components/CreateButton';
+import './components/MainForm';

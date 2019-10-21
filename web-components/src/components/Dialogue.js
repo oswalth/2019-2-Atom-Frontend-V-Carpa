@@ -6,71 +6,88 @@ template.innerHTML = `
         font-family: sans-serif;
         padding: 8px;
         color: #000;
+        box-sizing: border-box;
     }
 
     
     .dialogue {
         width: 100%;
         display: flex;
-        flex-flow: row;
-        margin-right: 10px;           
-        padding: 10px;
-        align-items: center;
+        
     }
+
 
     .dialogue .avatar{
-        height: 30px;
-        width: 30px;
-        margin: 5px 15px;
-        background: url(https://image.flaticon.com/icons/svg/156/156887.svg)
+        height: 60px;
+        width: 60px;
+        margin-right: 10px;
+        border-radius: 50%; 
+        flex-shrink: 0;
+        flex-grow: 0;
+        background: url(https://assets.dryicons.com/uploads/icon/svg/5608/9446101f-27b4-4f8f-9761-0397d7ea932e.svg)
     }
 
+    .dialogue .wrapper{
+        flex: auto;
+        padding: 0px 0px 0px 10px;
+        border-bottom: 0.5px solid #4f4f4f;
+        height:100%;
+        
+    }
 
     .dialogue .text {
         display: flex;
-        width: 100%;
-        flex-flow: column wrap;
-        flex-grow: 1;
-        align-self: stretch;
+        flex-flow: row wrap;
+        align-self: flex-end;
+        justify-content: space-between;
         height: 100%;
     }
 
-    .dialogue .message{
+    .dialogue .name{
+        padding-bottom: 5px;
+    }
+
+    .dialogue .time{
+        font-size: 12px;
         color: #4f4f4f;
-   }
+        float: right;
+        padding-right: 20px;
+    }
 
     .dialogue .info{
         display: flex;
-        flex-flow: column wrap;
+        flex-flow: row wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        height: 100%;
+        padding-bottom: 10px;
     }
+
+    .dialogue .message{
+      flex: auto;
+      color: #4f4f4f;
+      margin-right: 20px;
+      text-overflow: ellipsis;
+  }
 
     .dialogue .status{
-        align-self: end;
+        color: #4f4f4f;
+        padding-right: 20px;
     } 
-
-
-    .dialogue .time{
-        font-size: 10px;
-        padding-top: 4px;
-        color: #000;
-        
-        align-items: center;
-    }
-
-
     
 
 </style>
 <div class="dialogue">
-    <div class='avatar'>
-    </div>
-    <div class='text'>
-        <div class='name'></div>
-        <div class='message'></div>
-    </div>
-    <div class='info'>
-        <div class='time'></div>
-        <div class='status'>ok</div>
+    <div class='avatar'></div>
+    <div class='wrapper'>
+      <div class='text'>
+          <div class='name'></div>
+          <div class='time'></div>
+      </div>
+      <div class='info'>
+          <div class='message'></div>
+          <div class='status'>ok</div>
+      </div>
     </div>
 </div>
 `;
@@ -86,59 +103,46 @@ class DialogueItem extends HTMLElement {
     this.$name = this._shadowRoot.querySelector('.name');
     this.$message = this._shadowRoot.querySelector('.message');
     this.$timestamp = this._shadowRoot.querySelector('.time');
-
-    console.log(this.$name);
-    // this.$identifier = this._shadowRoot.getElementById('identifier')
   }
 
   static get observedAttributes() {
-    return ['name', 'message', 'timestamp'];
+    return ['personname', 'dialogueid'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     // eslint-disable-next-line default-case
     switch (name) {
-      case 'message':
-        this._message = newValue;
+      case 'personname':
+        this.personName = newValue;
+        this.$name.innerHTML = this.personName;
         break;
-      case 'name':
-        this._name = newValue;
-        break;
-      case 'timestamp':
-        this._timestamp = newValue;
+      case 'dialogueid':
+        this.dialogueID = newValue;
         break;
     }
-    console.log('rendering in atr dialogue-item');
-    this._renderMessage();
-  }
-
-  connectedCallback() {
-    this._renderMessage();
   }
 
   toObject() {
-    this.messageObject = {
+    this.dialogueObject = {
       name: this.$name.innerHTML,
       message: this.$message.innerHTML,
       timestamp: this.$timestamp.innerHTML,
     };
-    return this.messageObject;
+    return this.dialogueObject;
   }
 
   _renderMessage() {
-    console.log('rendering dialogue-item');
-    this.$name.innerHTML = this._name;
-    this.$message.innerHTML = this._message;
-    const time = new Date();
-    if (this._timestamp) {
-      this.$timestamp = this._timestamp;
-    } else {
-      this.$timestamp.innerHTML = time.toLocaleString('ru', {
+    const msgs = JSON.parse(localStorage.getItem(`dialogue#${this.dialogueID}-${this.personName}`));
+    if (msgs === null) {
+      this.$timestamp.innerHTML = new Date().toLocaleString('ru', {
         hour: 'numeric',
         minute: 'numeric',
       });
+    } else {
+      this.dialogue = msgs[msgs.length - 1];
+      this.$message.innerHTML = this.dialogue.message;
+      this.$timestamp.innerHTML = this.dialogue.timestamp;
     }
-    this.identifier = Date.parse(time) + (Math.random() * 1000);
   }
 }
 
