@@ -29,7 +29,6 @@ template.innerHTML = `
   message-form.disappear{
     animation-name: chatDisappear;
   }
-
   @keyframes chatDisappear{
     from{
       right: 0;
