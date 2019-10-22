@@ -88,6 +88,13 @@ class ChatHeader extends HTMLElement {
     super();
     this._shadowRoot = this.attachShadow({ mode: 'open' });
     this._shadowRoot.appendChild(template.content.cloneNode(true));
+    this.$backButton = this.shadowRoot.querySelector('.backButton');
+
+    this.$backButton.addEventListener('click', this.backButtonClick.bind(this));
+  }
+
+  backButtonClick() {
+    this.dispatchEvent(new Event('backButtonClick'));
   }
 }
 
