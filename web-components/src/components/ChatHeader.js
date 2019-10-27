@@ -23,6 +23,10 @@ template.innerHTML = `
         cursor: pointer;
     }
 
+    .backButton:active{
+        transform: translateX(-5px);
+    }
+
     .chatInfo{
         flex: auto;
         height: 100%;

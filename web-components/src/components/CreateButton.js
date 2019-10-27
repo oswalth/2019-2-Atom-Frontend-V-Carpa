@@ -11,9 +11,9 @@ template.innerHTML = `
         position: absolute; 
         bottom: 0;
         right: 0;
-        height: 40px;
-        width: 40px;
-        background: url(https://image.flaticon.com/icons/svg/4/4378.svg);
+        height: 48px;
+        width: 48px;
+        background: url(https://www.shareicon.net/data/48x48/2016/09/10/828168_write_512x512.png);
         margin: 0px 30px 20px 0px;
         overflow: hidden;
         opacity: 0.5;
@@ -24,6 +24,14 @@ template.innerHTML = `
       opacity:1;
     }
 
+    .createDialogueButton:focus {
+      outline:0;
+    }
+
+    .createDialogueButton:active {
+      outline:0;
+      transform: translateY(-3px);
+    }
     
 
 </style>

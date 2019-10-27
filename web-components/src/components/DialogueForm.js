@@ -48,16 +48,9 @@ template.innerHTML = `
         }
 
         .dialogue-item:hover{
-            background-color: #CFD0D1;
+            background-color: #2587e8;
         }
       
-        .createDialogueButton:hover{
-          opacity: 1;
-          transform: scale(1.01);
-          transition: all ease 500ms;
-      }
-
-
         ::-webkit-scrollbar{
             width: 0px;
         }

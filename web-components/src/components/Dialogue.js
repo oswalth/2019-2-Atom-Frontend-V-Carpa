@@ -4,7 +4,7 @@ template.innerHTML = `
 <style>
     :host {
         font-family: sans-serif;
-        padding: 8px;
+        
         color: #000;
         box-sizing: border-box;
     }
@@ -14,26 +14,27 @@ template.innerHTML = `
         width: 100%;
         display: flex;
         cursor: pointer;
+        transition-duration: 0.4s;
     }
 
     .dialogue:hover{
-      background-color: #CFD0D1;
+        background-color: #c4c4c4;
     }
 
 
     .dialogue .avatar{
         height: 60px;
         width: 60px;
-        margin-right: 10px;
+        margin: auto;
         border-radius: 50%; 
         flex-shrink: 0;
         flex-grow: 0;
-        background: url(https://assets.dryicons.com/uploads/icon/svg/5608/9446101f-27b4-4f8f-9761-0397d7ea932e.svg)
+        background: url(https://image.flaticon.com/icons/svg/190/190588.svg)
     }
 
     .dialogue .wrapper{
         flex: auto;
-        padding: 0px 0px 0px 10px;
+        padding: 10px;
         border-bottom: 0.5px solid #4f4f4f;
         height:100%;
         
