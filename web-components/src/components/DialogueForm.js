@@ -44,8 +44,19 @@ template.innerHTML = `
             overflow: hidden;
             width: 100%;
             padding: 0 10px 20px 10px;
+            cursor: pointer;
         }
-        
+
+        .dialogue-item:hover{
+            background-color: #CFD0D1;
+        }
+      
+        .createDialogueButton:hover{
+          opacity: 1;
+          transform: scale(1.01);
+          transition: all ease 500ms;
+      }
+
 
         ::-webkit-scrollbar{
             width: 0px;
@@ -85,19 +96,19 @@ class DialogueForm extends HTMLElement {
     event.preventDefault();
     const person = prompt('Enter nickname of a person you would like to conversate with');
     if (person.length > 0) {
+      const text = prompt('Enter message');
+      const dialogue = document.createElement('dialogue-item');
+      this.dialoguesCounter += 1;
+      dialogue.setAttribute('dialogueid', this.dialoguesCounter);
+      dialogue.setAttribute('personname', person);
+      dialogue._renderMessage();
+      dialogue.$message.innerHTML = text;
+      this.$dialoguesList.append(dialogue);
+      const dialogueObj = dialogue.toObject();
+      localStorage.setItem('counter', this.dialoguesCounter);
+      localStorage.setItem(`dialogue#${this.dialoguesCounter}-${person}`, JSON.stringify([dialogueObj]));
       this.$button.dispatchEvent(new CustomEvent('newDialogue'));
     }
-    const text = prompt('Enter message');
-    const dialogue = document.createElement('dialogue-item');
-    this.dialoguesCounter += 1;
-    dialogue.setAttribute('dialogueid', this.dialoguesCounter);
-    dialogue.setAttribute('personname', person);
-    dialogue._renderMessage();
-    dialogue.$message.innerHTML = text;
-    this.$dialoguesList.append(dialogue);
-    const dialogueObj = dialogue.toObject();
-    localStorage.setItem('counter', this.dialoguesCounter);
-    localStorage.setItem(`dialogue#${this.dialoguesCounter}-${person}`, JSON.stringify([dialogueObj]));
   }
 
   renderDialogues() {

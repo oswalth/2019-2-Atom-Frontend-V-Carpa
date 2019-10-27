@@ -8,15 +8,23 @@ template.innerHTML = `
         display: block;
         border: none;
         cursor: pointer;
-        opacity: 0.8;
-        position: fixed;
+        position: absolute; 
         bottom: 0;
         right: 0;
         height: 40px;
         width: 40px;
         background: url(https://image.flaticon.com/icons/svg/4/4378.svg);
         margin: 0px 30px 20px 0px;
+        overflow: hidden;
+        opacity: 0.5;
+        transition: 0.3s;
     }
+
+    .createDialogueButton:hover{
+      opacity:1;
+    }
+
+    
 
 </style>
 

@@ -13,7 +13,11 @@ template.innerHTML = `
     .dialogue {
         width: 100%;
         display: flex;
-        
+        cursor: pointer;
+    }
+
+    .dialogue:hover{
+      background-color: #CFD0D1;
     }
 
 
