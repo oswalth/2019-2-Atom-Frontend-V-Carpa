@@ -5,6 +5,7 @@ template.innerHTML = `
     width: 100vw;
     height: 100vh;
     position: relative;
+    overflow: hidden;
   }
   .container *{
     position: absolute;
@@ -72,6 +73,7 @@ class MainForm extends HTMLElement {
 
     // this.$dialogList.dialogLoader();
     this.openDialogueEvent();
+    this.$dialogForm.$button.addEventListener('newDialogue', () => this.openDialogueEvent());
   }
 
   openDialogueEvent() {
