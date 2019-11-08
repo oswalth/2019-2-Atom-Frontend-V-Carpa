@@ -48,7 +48,6 @@ template.innerHTML = `
         .inputFrom {
             width: 100%;
             background-color: #F7F8FA;
-            
             z-index: 1;
         }
 
