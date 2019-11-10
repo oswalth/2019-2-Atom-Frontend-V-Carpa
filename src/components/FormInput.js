@@ -2,9 +2,9 @@ import React from 'react'
 import styles from '../styles/FormInput.module.css'
 
 
-
 export function FormInput(props) {
     const input = React.useRef(null)
+    const {messageHandler} = props
     
     const onKeyPress = (event) => {
         if (event.charCode  === 13) {
@@ -13,9 +13,10 @@ export function FormInput(props) {
       }
 
     const onSubmit = () => {
-        const message = input.current.value.trim()
-        if (message.length > 0){
+        const value = input.current.value.trim()
+        if (value !== ''){
             input.current.value = ''
+            messageHandler(value)
         }
     }
     

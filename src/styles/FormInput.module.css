@@ -28,4 +28,6 @@ input{
     margin: 5px 15px;
     background: url(https://image.flaticon.com/icons/svg/309/309395.svg);
     background-repeat: no-repeat;
+    border: none;
+    outline:none;
 }
