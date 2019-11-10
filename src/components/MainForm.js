@@ -76,8 +76,10 @@ export class MainForm extends React.Component {
       status: 'sent',
     };
     messages[currentDialogue - 1].push(message);
-    this.state.chats[currentDialogue - 1].lastMessage = message;
     this.setState(messages);
+    if (!chatId) {
+      this.setLastMessage();
+    }
     localStorage.setItem('messages', JSON.stringify(messages));
   }
 
@@ -87,7 +89,6 @@ export class MainForm extends React.Component {
     const name = prompt("Enter person's name");
     const text = prompt('Write a message');
     chatCounter += 1;
-
     this.messageHandler(text, new Date(), chatCounter);
     const chatMsgs = this.state.messages[chatCounter - 1];
     chats.push({
@@ -98,10 +99,22 @@ export class MainForm extends React.Component {
       lastMessage: chatMsgs[chatMsgs.length - 1],
 
     });
-
     this.setState({ chats, chatCounter });
+    this.setLastMessage(chatCounter);
     localStorage.setItem('chats', JSON.stringify(chats));
     localStorage.setItem('chatCounter', JSON.stringify(chatCounter));
+  }
+
+  setLastMessage(chatId = null) {
+    const { messages, chats } = this.state;
+    let { currentDialogue } = this.state;
+    if (chatId) {
+      currentDialogue = chatId;
+    }
+    const chatMessages = messages[currentDialogue - 1];
+    chats[currentDialogue - 1].lastMessage = chatMessages[chatMessages.length - 1];
+    this.setState(chats);
+    localStorage.setItem('chats', JSON.stringify(chats));
   }
 
   render() {
