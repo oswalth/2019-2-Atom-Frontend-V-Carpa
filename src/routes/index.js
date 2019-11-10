@@ -1,14 +1,18 @@
-import React from 'react'
-import CounterContainer from '../containers/CounterContainer'
-import Header from '../components/Header'
-import { Router, Route, Switch } from 'react-router-dom'
-import { createBrowserHistory } from 'history'
-import styled from '@emotion/styled'
+/* eslint-disable import/no-named-as-default */
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-unused-vars */
+import React from 'react';
+import { Router, Route, Switch } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import styled from '@emotion/styled';
+import Header from '../components/Header';
+import CounterContainer from '../containers/CounterContainer';
 
 const Container = styled.div`
   text-align: center;
-`
-export const history = createBrowserHistory()
+`;
+export const history = createBrowserHistory();
 
 function Routes() {
   return (
@@ -20,7 +24,7 @@ function Routes() {
         </Switch>
       </Container>
     </Router>
-  )
+  );
 }
 
-export default Routes
+export default Routes;

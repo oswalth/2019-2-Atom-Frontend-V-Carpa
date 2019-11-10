@@ -1,13 +1,13 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-import React from 'react'
-import styles from '../styles/ChatHeader.module.css'
+/* eslint-disable no-unused-vars */
+import React from 'react';
+import styles from '../styles/ChatHeader.module.css';
 
 
-
+// eslint-disable-next-line import/prefer-default-export
 export function ChatHeader(props) {
-    const {details, clickBack} = props
+  const { details, clickBack } = props;
 
-    return (
+  return (
         <div className={styles.header}>
             <div onClick={clickBack} className={styles.backButton} />
             <div className={styles.chatInfo}>
@@ -20,5 +20,5 @@ export function ChatHeader(props) {
             <div className={styles.searchButton} />
             <div className={styles.settingsButton} />
         </div>
-    )
+  );
 }
