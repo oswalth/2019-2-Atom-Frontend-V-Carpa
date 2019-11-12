@@ -1,0 +1,70 @@
+.dialogue {
+    font-family: sans-serif;
+    color: #000;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    padding: 6px 0px 6px 0px;
+}
+
+
+.dialogue:hover{
+    background-color: #c4c4c4;
+}
+
+.avatar{
+    height: 70px;
+    width: 70px;
+    margin: auto;
+    border-radius: 50%; 
+    flex-shrink: 0;
+    flex-grow: 0;
+    background: url(https://image.flaticon.com/icons/svg/190/190588.svg)
+}
+
+.wrapper{
+    flex: auto;
+    border-bottom: 0.5px solid #4f4f4f;
+    height:100%;   
+    margin-left: 10px; 
+    padding-bottom: 5px;
+    padding-right: 10px;
+}
+
+.text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.name{
+    flex: auto;
+}
+
+.time{
+
+    font-size: 12px;
+    color: #4f4f4f;
+    float: right;
+    
+}
+
+.info{
+    margin-bottom: 10px;
+    display: flex;
+    padding-top: 10px;
+}
+
+.message{
+    flex: auto;
+    color: #4f4f4f;
+    margin-right: 20px;
+    text-overflow: ellipsis;
+}
+
+.status{
+    color: #4f4f4f;
+    float: right;
+} 

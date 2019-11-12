@@ -1,12 +1,15 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from '@emotion/styled'
+/* eslint-disable no-unused-vars */
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
 
 const Intro = styled.p`
   font-size: large;
-`
+`;
 
-function Counter({ increment, incrementIfOdd, decrement, counter }) {
+function Counter({
+  increment, incrementIfOdd, decrement, counter,
+}) {
   return (
     <section>
       <Intro>
@@ -18,7 +21,7 @@ function Counter({ increment, incrementIfOdd, decrement, counter }) {
         <button onClick={incrementIfOdd}>Increment if odd</button>
       </p>
     </section>
-  )
+  );
 }
 
 Counter.propTypes = {
@@ -26,6 +29,6 @@ Counter.propTypes = {
   incrementIfOdd: PropTypes.func.isRequired,
   decrement: PropTypes.func.isRequired,
   counter: PropTypes.number.isRequired,
-}
+};
 
-export default Counter
+export default Counter;

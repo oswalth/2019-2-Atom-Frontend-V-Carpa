@@ -1,9 +1,10 @@
-import React from 'react'
-import logo from '../assets/logo.svg'
-import styled from '@emotion/styled'
-import { keyframes } from '@emotion/core'
+/* eslint-disable no-unused-vars */
+import React from 'react';
+import styled from '@emotion/styled';
+import { keyframes } from '@emotion/core';
+import logo from '../assets/logo.svg';
 
-const year = new Date().getFullYear()
+const year = new Date().getFullYear();
 
 const rotate360 = keyframes`
   from {
@@ -12,7 +13,7 @@ const rotate360 = keyframes`
   to {
     transform: rotate(360deg);
   }
-`
+`;
 
 const TopBar = styled.div`
   background-color: #222;
@@ -24,7 +25,7 @@ const TopBar = styled.div`
     animation: ${rotate360} infinite 20s linear;
     height: 80px;
   }
-`
+`;
 
 function Header() {
   return (
@@ -32,7 +33,7 @@ function Header() {
       <img src={logo} className="redux-logo" alt="logo" />
       <h2>Atom Mail.Ru, {year}</h2>
     </TopBar>
-  )
+  );
 }
 
-export default Header
+export default Header;

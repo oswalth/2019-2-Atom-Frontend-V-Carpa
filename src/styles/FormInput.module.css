@@ -1,0 +1,33 @@
+.formInput {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    box-sizing: border-box;
+    background-color: #F7F8FA;
+}
+
+.attachButton { 
+    height: 32px;
+    width: 40px;
+    margin: 5px 15px;
+    background: url(https://image.flaticon.com/icons/svg/116/116312.svg);
+    background-repeat: no-repeat;
+}
+
+input{
+    border: 0;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+
+.sendButton{
+    height: 32px;
+    width: 40px;
+    margin: 5px 15px;
+    background: url(https://image.flaticon.com/icons/svg/309/309395.svg);
+    background-repeat: no-repeat;
+    border: none;
+    outline:none;
+}
