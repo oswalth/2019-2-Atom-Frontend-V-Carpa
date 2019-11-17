@@ -26,7 +26,7 @@ export function MessageForm(props) {
                 {(value) => (
                     <ChatHeader
                         details={details}
-                        clickBack={value.closeDialogue.bind(value)}
+                        clickBack={value.closeDialogue.bind(value, 'MessageForm')}
                     />
                 )}
             </MyContext.Consumer>

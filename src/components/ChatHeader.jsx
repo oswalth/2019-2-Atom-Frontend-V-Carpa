@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../styles/ChatHeader.module.css';
 
 
@@ -9,7 +10,9 @@ export function ChatHeader(props) {
 
   return (
         <div className={styles.header}>
-            <div onClick={clickBack} className={styles.backButton} />
+            <Link to={'/'}>
+                <div onClick={clickBack} className={styles.backButton} />
+            </Link>
             <div className={styles.chatInfo}>
                 <div className={styles.avatar} />
                 <div className={styles.senderInfo}>
