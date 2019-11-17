@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../styles/Profile.module.css';
-import MyContext from './MyContext.Context';
 
 
 export function Profile(props) {
