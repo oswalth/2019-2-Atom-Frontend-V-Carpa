@@ -30,7 +30,7 @@
     width: 30px;
     margin: 5px 15px;   
     border-radius: 50%;      
-    background: url(https://assets.dryicons.com/uploads/icon/svg/5608/9446101f-27b4-4f8f-9761-0397d7ea932e.svg);
+    background: url(https://image.flaticon.com/icons/svg/190/190588.svg) no-repeat center center;
 }
 
 .senderInfo {
@@ -47,12 +47,12 @@
     height: 20px;
     width: 20px;
     margin: 5px 15px;
-    background: url(https://image.flaticon.com/icons/svg/149/149309.svg)
+    background: url(https://image.flaticon.com/icons/svg/149/149309.svg) no-repeat center center;
 }
 
 .settingsButton{
     height: 20px;
     width: 20px;
     margin: 5px 15px;
-    background: url(https://image.flaticon.com/icons/svg/149/149404.svg)
+    background: url(https://image.flaticon.com/icons/svg/149/149404.svg) no-repeat center center;
 }

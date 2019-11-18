@@ -31,7 +31,6 @@ export function DialogueForm(props) {
                 {(value) => (
                     <CreateDialogueButton createHandler={value.createHandler.bind(value)}/>
                 )}
-
             </MyContext.Consumer>
         </div>
   );

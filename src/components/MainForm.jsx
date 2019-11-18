@@ -5,6 +5,7 @@
 import React from 'react';
 import { DialogueForm } from './DialogueForm';
 import { MessageForm } from './MessageForm';
+import { Profile } from './Profile';
 import MyContext from './MyContext.Context';
 import styles from '../styles/MainForm.module.css';
 
@@ -18,10 +19,9 @@ export class MainForm extends React.Component {
       messages: storage.messages,
       chatCounter: storage.chatCounter,
       currentDialogue: null,
-      MessageFormAppearance: null,
       frameStyles: {
-        MessageFormAppearance: null,
-        DialoguesFormAppearance: null,
+        MessageForm: null,
+        Profile: null,
       },
     };
   }
@@ -43,19 +43,31 @@ export class MainForm extends React.Component {
 
   openDialogue(chatId) {
     const { state } = this;
-    state.MessageFormAppearance = {
+    state.frameStyles.MessageForm = {
       animationName: styles.chatAppearance,
     };
     state.currentDialogue = chatId;
-    this.setState(state);
+    if (state !== this.state) {
+      this.setState(state);
+    }
   }
 
-  closeDialogue() {
+  closeDialogue(frame = null) {
     const { state } = this;
-    state.MessageFormAppearance = {
-      animationName: styles.chatDisappear,
-    };
-    this.setState(state);
+    if (!frame) {
+      Object.keys(state.frameStyles).forEach((index) => {
+        state.frameStyles[index] = {
+          animationName: styles.chatDisappear,
+        }
+      });
+    } else {
+      state.frameStyles[frame] = {
+        animationName: styles.chatDisappear,
+      };
+    }
+    if (state !== this.state) {
+      this.setState(state);
+    }
   }
 
   messageHandler(value, chatTimestamp = null, chatId = null) {
@@ -117,22 +129,52 @@ export class MainForm extends React.Component {
     localStorage.setItem('chats', JSON.stringify(chats));
   }
 
+  openProfile() {
+    const { state } = this;
+    state.frameStyles.Profile = {
+      animationName: styles.chatAppearance,
+    };
+    if (state !== this.state) {
+      this.setState(state);
+    }
+  }
+
+  pageRouter() {
+    const path = this.props.location.pathname;
+    console.log('opening')
+    switch (true) {
+      case /chat\/\d\/?$/.test(path):
+        const chatId = parseInt(path.match(/\d+/), 10);
+        console.log(chatId)
+        this.openDialogue(chatId);
+        break;
+      case /profile\/\d\/?$/.test(path):
+        this.openProfile();
+        break;
+      default:
+        this.closeDialogue();
+        break;
+    }
+  }
+
   render() {
+    this.pageRouter();
     const { state } = this;
     return (
-            <MyContext.Provider value={this}>
-                <div className={styles.container}>
-                    <DialogueForm
-                    chats={state.chats}
-                    />
-                    <MessageForm
-                        style={state.MessageFormAppearance}
-                        details={state.currentDialogue && state.chats[state.currentDialogue - 1]}
-                        messages={state.currentDialogue
-                            && state.messages[state.currentDialogue - 1]}
-                    />
-                </div>
-            </MyContext.Provider>
+      <MyContext.Provider value={this}>
+          <div className={styles.container}>
+            <DialogueForm
+              chats={state.chats}
+            />
+            <MessageForm
+                style={state.frameStyles.MessageForm}
+                details={state.currentDialogue && state.chats[state.currentDialogue - 1]}
+                messages={state.currentDialogue
+                    && state.messages[state.currentDialogue - 1]}
+            />
+            <Profile style={state.frameStyles.Profile}/>
+          </div>
+      </MyContext.Provider>
     );
   }
 }
