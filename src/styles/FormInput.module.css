@@ -26,8 +26,47 @@ input{
     height: 32px;
     width: 40px;
     margin: 5px 15px;
-    background: url(https://image.flaticon.com/icons/svg/309/309395.svg);
+    background: url(https://image.flaticon.com/icons/svg/724/724954.svg);
     background-repeat: no-repeat;
     border: none;
     outline:none;
+}
+
+
+.dropOut {
+    height: 0;
+	transition-duration: 0.3s;
+	border-radius: 20px 20px 0 0;
+	background-color: #29384B;
+	position: absolute;
+	bottom: 50px;
+	left: 10px;
+	z-index: 1;
+	overflow: hidden;
+
+}
+
+.dropOutContainer{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.attachItem {
+	width: 30px;
+	height: 100%;
+	background-position: center center;
+	background-size: 25px;
+	background-repeat: no-repeat;
+    margin: 0 10px 0 10px;
+    filter: invert(1);
+}
+.attachImage {
+    background-image: url(https://image.flaticon.com/icons/svg/149/149092.svg);
+}
+
+.attachGeo {
+    background-image: url(https://image.flaticon.com/icons/svg/1180/1180805.svg);
 }
