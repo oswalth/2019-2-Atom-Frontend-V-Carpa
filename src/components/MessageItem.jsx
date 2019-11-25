@@ -65,7 +65,7 @@ function Attachment(props) {
       addStyle.backgroundImage = `url(${staticMap})`;
       content = (
         <div>
-          <a href={path} target="_blank">
+          <a href={path} target="_blank" rel="noopener noreferrer">
             <div style={addStyle} className={`${styles.attachment}`} />
           </a>
         </div>
