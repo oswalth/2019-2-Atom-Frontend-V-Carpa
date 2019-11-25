@@ -4,6 +4,7 @@ import './styles/globalStyles.css';
 import { BrowserRouter, Route } from 'react-router-dom';
 import * as serviceWorker from './utils/serviceWorker';
 import { MainForm } from './components/MainForm'
+import './index.css';
 
 render(
   <BrowserRouter>
