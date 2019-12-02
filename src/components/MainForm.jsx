@@ -8,6 +8,7 @@ import React from 'react';
 import { DialogueForm } from './DialogueForm';
 import { MessageForm } from './MessageForm';
 import { Profile } from './Profile';
+import { Login } from './LoginForm';
 import MyContext from './MyContext.Context';
 import { recordStream } from '../lib/recordStream';
 import styles from '../styles/MainForm.module.css';

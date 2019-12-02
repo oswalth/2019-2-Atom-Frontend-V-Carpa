@@ -10,6 +10,7 @@ export function DialoguesHeader() {
             <div className={styles.menuBurger} />
             <div className={styles.messenger}>Messenger</div>
             <div className={styles.searchButton} />
+            <div className={styles.logOutButton} />
         </div>
   );
 }
