@@ -1,46 +1,29 @@
-import React, { useState } from 'react';
-import {
- Button, FormGroup, FormControl 
-} from 'react-bootstrap';
-import styles from '../styles/LoginForm.module.css';
+
+import { Link } from "react-router-dom";
+import React from 'react';
+import '../styles/LoginForm.modules.css'
 
 
-export function Login(props) {
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+export default function LoginForm() {
+  const [name, setName] = React.useState('');
+  const [room, setRoom] = React.useState('');
 
-  function validateForm() {
-    return email.length > 0 && password.length > 0;
-  }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-  }
 
   return (
-    <div className={styles.Login}>
-      <form onSubmit={handleSubmit}>
-        <FormGroup controlId="email" bsSize="large">
-          <label>Email</label>
-          <FormControl
-            autoFocus
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <label>Password</label>
-          <FormControl
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-          />
-        </FormGroup>
-        <Button block bsSize="large" disabled={!validateForm()} type="submit">
-          Login
-        </Button>
-      </form>
+    <div className="joinOuterContainer">
+      <div className="joinInnerContainer">
+        <h1 className="heading">Join</h1>
+        <div>
+          <input placeholder="Name" className="joinInput" type="text" onChange={(event) => setName(event.target.value)} />
+        </div>
+        <div>
+          <input placeholder="Room" className="joinInput mt-20" type="text" onChange={(event) => setRoom(event.target.value)} />
+        </div>
+        <Link onClick={e => (!name || !room) ? e.preventDefault() : null} to={`/chat?name=${name}&room=${room}`}>
+          <button className={'button mt-20'} type="submit">Sign In</button>
+        </Link>
+      </div>
     </div>
   );
 }

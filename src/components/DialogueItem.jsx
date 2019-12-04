@@ -9,7 +9,11 @@ import MyContext from './MyContext.Context';
 
 export function DialogueItem(props) {
   const { chat } = props;
-  const formattedTime = new Date(chat.lastMessage.time);
+  let formattedTime = new Date();
+  const content = 'No messages yet';
+  if (chat.last_message !== null){
+    formattedTime = new Date(chat.last_message.added_at); 
+  }  
   return (
         <MyContext.Consumer>
             {(value) => (
@@ -18,7 +22,7 @@ export function DialogueItem(props) {
                         <div className={styles.avatar} />
                     </Link>
                     <div className={styles.wrapper}>
-                        <Link to={`/chat/${chat.id}`} style={{ textDecoration: 'none', color: 'unset' }}>
+                        <Link to={`/chats/${chat.id}`} style={{ textDecoration: 'none', color: 'unset' }}>
                             <div className={styles.text}>
                                 <div className={styles.name}>{chat.title}</div>
                                 <div className={styles.time}>{formattedTime.toLocaleString('ru', {
@@ -27,8 +31,12 @@ export function DialogueItem(props) {
                                 })}</div>
                             </div>
                             <div className={styles.info}>
-                                <div className={styles.message}>{chat.lastMessage.content || 'Attachment'}</div>
-                                <div className={styles.status}>{chat.lastMessage.status}</div>
+                                <div className={styles.message}>{
+                                chat.last_message ? 
+                                chat.last_message.content || 'Attachment' :
+                                content}
+                            </div>
+                                <div className={styles.status}>OK</div>
                             </div>
                         </Link>
                     </div>

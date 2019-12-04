@@ -6,8 +6,8 @@ import styles from '../styles/MessageItem.module.css';
 
 
 export function MessageItem(props) {
-  const { content, time } = props.inner;
-  const formattedTime = new Date(time);
+  const { content, added_at } = props.inner;
+  const formattedTime = new Date(added_at);
   let isAttached = false;
   const attachmentsToRender = [];
   if ('attachments' in props.inner) {

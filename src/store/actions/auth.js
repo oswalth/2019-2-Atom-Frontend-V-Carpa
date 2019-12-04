@@ -24,10 +24,10 @@ export const authFail = (error) => {
 }
 
 export const logout = () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
     return {
-        type: actionTypes.AUTH_START
+        type: actionTypes.AUTH_LOGOUT
     }
 }
 
@@ -64,7 +64,7 @@ export const authLogin = (username, password) => {
 export const authSignUp = (username, email, password1, password2) => {
     return dispatch => {
         dispatch(authStart());
-        axios.post('http://127.0.0.1:8000/rest-auth/registation/', {
+        axios.post('http://127.0.0.1:8000/rest-auth/registration/', {
             username: username,
             email: email,
             password1: password1,

@@ -11,8 +11,9 @@ export function FormInput(props) {
     messageHandler,
     requireRecorder,
     mediaRecorder,
+    chatID,
   } = props;
-  const [dragFiles, setDragFiles] = props.dragFiles;
+  const [dragFiles, setDragFiles] = React.useState(props.dragFiles);
   const [dropOutStyle, setDropOutStyle] = React.useState(null);
   const [attachments, setAttachments] = React.useState(null);
   const [sendButtonType, setSendButtonType] = React.useState('mic');
@@ -25,7 +26,8 @@ export function FormInput(props) {
     const value = input.current.value.trim();
     if (attachments || value !== '') {
       input.current.value = '';
-      messageHandler(value, null, null, attachments);
+      console.log(value, chatID)
+      messageHandler(value, chatID, null, attachments);
     }
     setAttachments(null);
   };

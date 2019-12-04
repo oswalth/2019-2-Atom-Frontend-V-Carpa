@@ -7,13 +7,14 @@ import { ChatHeader } from './ChatHeader';
 import { FormInput } from './FormInput';
 import { MessageItem } from './MessageItem';
 import MyContext from './MyContext.Context';
+import axios from 'axios';
 
 
 export function MessageForm(props) {
-  const { messages, details, style } = props;
+  const { style, details, messages } = props;
   const [dragActive, setDragActive] = React.useState(false);
   const [dragFiles, setDragFiles] = React.useState(null);
-
+  console.log(props)
   const dragOver = (event) => {
     /* console.log(event.dataTransfer.files);
     if (event.dataTransfer.files[0].type.split('\\')[0] == 'image') {
@@ -37,14 +38,23 @@ export function MessageForm(props) {
     setDragFiles(event.dataTransfer.files[0]);
   };
 
-  if (details === null) {
+  if (details === null || messages === undefined) {
     return '';
   }
   const messagesToRender = [];
   messages.forEach((element) => {
     const messageItem = <MessageItem inner={element} />;
-    messagesToRender.push(messageItem);
+      messagesToRender.push(messageItem);
   });
+//   axios.get(`http://localhost:8000/api/chats/${details.id}`)
+//   .then((res) => {
+//       const messages = res.data.messages
+//       
+
+//   })
+  
+  
+
   return (
         <div
             onDrop={drop}
@@ -65,7 +75,7 @@ export function MessageForm(props) {
             </MyContext.Consumer>
             <div className={styles.chat}>
                 <div className={styles.messagesList}>
-                    {messagesToRender}
+                    { messagesToRender }
                 </div>
             </div>
 

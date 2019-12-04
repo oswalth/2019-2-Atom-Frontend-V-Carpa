@@ -40,19 +40,14 @@ const reducer = (state=initialState, action) => {
     switch (action.type) {
         case actionTypes.AUTH_START:
             return authStart(state, action);
-            break;
         case actionTypes.AUTH_SUCCESS:
             return authSuccess(state, action);
-            break;
         case actionTypes.AUTH_FAIL:
             return authFail(state, action);
-            break;
         case actionTypes.AUTH_LOGOUT:
             return authLogout(state, action);
-            break;   
         default:
             return state;
-            break;
     }
 }
 

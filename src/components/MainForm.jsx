@@ -12,38 +12,53 @@ import { Login } from './LoginForm';
 import MyContext from './MyContext.Context';
 import { recordStream } from '../lib/recordStream';
 import styles from '../styles/MainForm.module.css';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import * as actions from '../store/actions/auth'
 
 
 export class MainForm extends React.Component {
   constructor(props) {
     super(props);
-    const storage = this.parseStorage();
     this.state = {
-      chats: storage.chats,
-      messages: storage.messages,
-      chatCounter: storage.chatCounter,
+      chats: [],
+      messages: new Object(),
+      lastMessages: {},
+      chatCounter: null,
       currentDialogue: null,
       mediaRecorder: null,
       frameStyles: {
         MessageForm: null,
         Profile: null,
       },
-    };
+  }
+  }
+    
+
+  componentDidMount() {
+    this.parseStorage();
+    console.log(this.props);
   }
 
   // eslint-disable-next-line class-methods-use-this
-  parseStorage() {
-    const storage = {
-      chats: JSON.parse(localStorage.getItem('chats')),
-      messages: JSON.parse(localStorage.getItem('messages')),
-      chatCounter: JSON.parse(localStorage.getItem('chatCounter')),
-    };
-    if (!storage.chats) {
-      storage.chats = [];
-      storage.messages = {};
-      storage.chatCounter = 0;
-    }
-    return storage;
+  async parseStorage() {
+    const { state } = this;
+    await axios.get('http://localhost:8000/api/chats/')
+            .then((res) => {
+                this.setState({
+                    chats: res.data
+                });
+            })
+    const messages = {}
+    this.state.chats.forEach(async (chat) => {
+      await axios.get(`http://localhost:8000/api/chats/${chat.id}/`)
+            .then((res) => {
+             
+                messages[chat.id] = res.data.messages
+              
+            })
+    })
+    this.setState({messages: messages})
   }
 
   async requireRecorder() {
@@ -57,6 +72,18 @@ export class MainForm extends React.Component {
     }).catch((err) => {
       throw new Error(err);
     });
+  }
+
+  async loadChatMessages(chatId) {
+    const { state } = this;
+    await axios.get(`http://localhost:8000/api/chats/${chatId}/`)
+      .then((res) => {
+        state.messages[chatId] = res.data.messages
+      })
+    if (state !== this.state) {
+      this.setState({messages: state.messages});
+    }
+    console.log(this.state.messages[this.state.currentDialogue])
   }
 
   openDialogue(chatId) {
@@ -89,6 +116,7 @@ export class MainForm extends React.Component {
   }
 
   messageHandler(value, chatTimestamp = null, chatId = null, attachments = null) {
+    
     let { currentDialogue, messages } = this.state;
     let isAttached = false;
     if (!messages) {
@@ -96,14 +124,11 @@ export class MainForm extends React.Component {
     }
     if (chatId) {
       currentDialogue = chatId;
-      messages[currentDialogue - 1] = [];
+      messages[currentDialogue] = [];
     }
     const message = {
-      id: 'test',
       content: value,
-      amISender: true,
-      time: chatTimestamp || new Date(),
-      status: 'sent',
+      chat: currentDialogue,
     };
     if (attachments) {
       message.attachments = attachments;
@@ -119,13 +144,11 @@ export class MainForm extends React.Component {
         // pass
       }).catch(console.log);
     }
-    messages[currentDialogue - 1].push(message);
+    messages[currentDialogue].push(message);
     this.setState(messages);
     if (!chatId) {
       this.setLastMessage();
     }
-
-    localStorage.setItem('messages', JSON.stringify(messages));
   }
 
   createHandler() {
@@ -142,24 +165,21 @@ export class MainForm extends React.Component {
       is_group: false,
       host: 'Vladimir Carpa',
       lastMessage: chatMsgs[chatMsgs.length - 1],
-
     });
     this.setState({ chats, chatCounter });
     this.setLastMessage(chatCounter);
-    localStorage.setItem('chats', JSON.stringify(chats));
-    localStorage.setItem('chatCounter', JSON.stringify(chatCounter));
   }
 
   setLastMessage(chatId = null) {
+    debugger;
     const { messages, chats } = this.state;
     let { currentDialogue } = this.state;
     if (chatId) {
       currentDialogue = chatId;
     }
-    const chatMessages = messages[currentDialogue - 1];
-    chats[currentDialogue - 1].lastMessage = chatMessages[chatMessages.length - 1];
+    const chatMessages = messages[currentDialogue];
+    chats[currentDialogue - 1].last_message = chatMessages[chatMessages.length - 1];
     this.setState(chats);
-    localStorage.setItem('chats', JSON.stringify(chats));
   }
 
   openProfile() {
@@ -173,6 +193,7 @@ export class MainForm extends React.Component {
   }
 
   pageRouter() {
+    console.log(this.props)
     const path = this.props.location.pathname;
     switch (true) {
       case /chat\/\d\/?$/.test(path):
@@ -194,14 +215,12 @@ export class MainForm extends React.Component {
     return (
       <MyContext.Provider value={this}>
           <div className={styles.container}>
-            <DialogueForm
-              chats={state.chats}
-            />
+            <DialogueForm chats={state.chats}/>
             <MessageForm
                 style={state.frameStyles.MessageForm}
                 details={state.currentDialogue && state.chats[state.currentDialogue - 1]}
-                messages={state.currentDialogue
-                    && state.messages[state.currentDialogue - 1]}
+                messages={state.currentDialogue 
+                    && state.messages[state.currentDialogue]}
             />
             <Profile style={state.frameStyles.Profile}/>
           </div>
@@ -209,3 +228,19 @@ export class MainForm extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.token !== null,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAutoSignUp: () => dispatch(actions.authCheckState())
+  }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainForm);
