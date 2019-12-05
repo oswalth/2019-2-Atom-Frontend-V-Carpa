@@ -27,7 +27,7 @@ export function DialogueItem(props) {
                                 })}</div>
                             </div>
                             <div className={styles.info}>
-                                <div className={styles.message}>{chat.lastMessage.content}</div>
+                                <div className={styles.message}>{chat.lastMessage.content || 'Attachment'}</div>
                                 <div className={styles.status}>{chat.lastMessage.status}</div>
                             </div>
                         </Link>

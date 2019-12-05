@@ -1,8 +1,14 @@
+.container{
+    display: flex;
+    flex-flow: column;
+}
+
 .formInput {
     display: flex;
     flex-direction: row;
     height: 50px;
     box-sizing: border-box;
+    align-items: center;
     background-color: #F7F8FA;
 }
 
@@ -26,8 +32,136 @@ input{
     height: 32px;
     width: 40px;
     margin: 5px 15px;
-    background: url(https://image.flaticon.com/icons/svg/309/309395.svg);
-    background-repeat: no-repeat;
+    background: url(https://image.flaticon.com/icons/svg/724/724954.svg) no-repeat center center;
     border: none;
     outline:none;
+}
+
+
+
+.micButton {
+	background: url(https://image.flaticon.com/icons/svg/25/25682.svg) no-repeat center center;
+	background-size: 90%;
+}
+
+.cancelButton {
+	background: url(https://image.flaticon.com/icons/svg/151/151882.svg) no-repeat center center;
+	background-size: 90%;
+}
+
+.inputButton {
+	height: 100%;
+	width: 30px;
+	margin: 0 15px;
+	cursor: pointer;
+	opacity: 0.5;
+	transition-duration: 0.15s;
+	z-index: 1;
+}
+
+.inputButton:hover {
+	opacity: 1;
+}
+
+.inputButton:active {
+	opacity: 0.7;
+}
+
+
+.dropOut {
+    height: 0;
+	transition-duration: 0.3s;
+	border-radius: 20px 20px 0 0;
+	background-color: #29384B;
+	position: absolute;
+	bottom: 50px;
+	left: 10px;
+	z-index: 1;
+	overflow: hidden;
+
+}
+
+.dropOutContainer{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.attachItem {
+	width: 30px;
+	height: 100%;
+	background-position: center center;
+	background-size: 25px;
+	background-repeat: no-repeat;
+    margin: 0 10px 0 10px;
+    filter: invert(1);
+}
+.attachImage {
+    background-image: url(https://image.flaticon.com/icons/svg/149/149092.svg);
+}
+
+.attachGeo {
+    background-image: url(https://image.flaticon.com/icons/svg/1180/1180805.svg);
+}
+
+
+.additionsBox {
+	width: 100%;
+	height: 0;
+	background-color: #29384B;
+	transition-duration: 0.2s;
+	overflow-x: auto;
+}
+
+.additionsBoxUl {
+	display: flex;
+	height: 100%;
+}
+
+.additionsBoxUl li {
+	width: 120px;
+	height: 100%;
+	padding: 10px;
+	padding-left: 0;
+	flex-grow: 0;
+	flex-shrink: 0;
+    position: relative;
+    text-align: center;
+}
+
+.additionsBoxUl li:nth-child(1) {
+	padding-left: 10px !important;
+}
+
+.image {
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+	background-color: #29384B;
+    box-shadow: 0 0 5px 0 #151716;
+}
+
+.imageName {
+	font-size: var(--fontMinMinSize);
+	white-space: nowrap;
+	width: 80px;
+	margin: 5px 10px 0 10px;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.remove {
+	padding: 0px 7px 3px 7px;
+	font-weight: bold;
+	border-radius: 40px;
+	background-color: rgb(80, 99, 124);
+	box-shadow: 0 0 5px 0 #151716;
+	top: 5px;
+	right: 5px;
+	display: inline;
+	position: absolute;
+	cursor: pointer;
 }
