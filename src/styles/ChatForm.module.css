@@ -1,0 +1,16 @@
+.chatForm{
+    height: 0;
+	transition-duration: 0.3s;
+	border-radius: 20px 20px 0 0;
+	background-color: #29384B;
+	position: absolute;
+	bottom: 50px;
+	left: 10px;
+	z-index: 1;
+	overflow: hidden;
+}
+
+.radioSelect{
+    display: flex;
+    flex-flow: column;
+}

@@ -1,0 +1,132 @@
+.dialogues {
+    font-family: sans-serif;
+    background-color: #CFD0D1 ;
+    width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-content: flex-end;
+	position: absolute;
+	overflow: hidden;
+	z-index: 0;
+
+}
+
+/*.header{
+    width: 100%;
+    background-color: #29384B;
+    z-index: 1;
+}*/
+
+
+.dialogueList{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: column-reverse nowrap;
+    overflow-y: auto; 
+}
+
+.empty {
+	width: 100%;
+	text-align: center;
+	padding-top: 40vh;
+	font-size: var(--fontMinSize);
+	color: #4c4c4d;
+}
+
+.createDialogueButton {
+    display: block;
+    border: none;
+    cursor: pointer;
+    position: absolute; 
+    bottom: 0;
+    right: 0;
+    height: 48px;
+    width: 48px;
+    background: url(https://www.shareicon.net/data/48x48/2016/09/10/828168_write_512x512.png);
+    margin: 0px 30px 20px 0px;
+    overflow: hidden;
+    opacity: 0.5;
+    transition: 0.3s;
+}
+
+.createDialogueButton:hover{
+  opacity:1;
+}
+
+.createDialogueButton:focus {
+  outline:0;
+}
+
+.createDialogueButton:active {
+  outline:0;
+  transform: translateY(-3px);
+}
+
+.chatForm{
+    height: 0;
+	transition-duration: 0.3s;
+	background-color: #29384B;
+	position: absolute;
+    width: 50%;
+	z-index: 1;
+    overflow: hidden;
+    left: 25%;
+    top: 20%;
+}
+
+.formPopUp {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 25%;
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+  }
+
+.formContainer {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+.formContainer input[type=text], .formContainer input[type=text] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+  }
+  
+.formContainer input[type=text]:focus, .formContainer input[type=text]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+.formContainer .btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom:10px;
+    opacity: 0.8;
+  }
+
+.formContainer .btn:hover, .open-button:hover {
+    opacity: 1;
+}
+/*
+.dialogue-item{
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    padding: 0 10px 20px 10px;
+    cursor: pointer;
+}
+
+.dialogue-item:hover{
+    background-color: #2587e8;
+}*/
