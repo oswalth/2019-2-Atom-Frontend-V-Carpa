@@ -6,8 +6,9 @@ import styles from '../styles/MessageItem.module.css';
 
 
 export function MessageItem(props) {
-  const { content, time } = props.inner;
-  const formattedTime = new Date(time);
+  const { content, added_at, sender } = props.inner;
+  const { user } = props;
+  const formattedTime = new Date(added_at);
   let isAttached = false;
   const attachmentsToRender = [];
   if ('attachments' in props.inner) {
@@ -18,9 +19,15 @@ export function MessageItem(props) {
       attachmentsToRender.push(attachmentItem);
     });
   }
+  const amISender = sender === user.id;
   return (
         <div className={styles.messageWrap}>
-            <div className={styles.messageItem}>
+            <div 
+              className={styles.messageItem}
+              style={amISender ?
+                    {float:"right"} :
+                    {float:"left"}}
+              >
                 <div className={styles.inner}>
                   <div className={styles.message}>
                     {content}

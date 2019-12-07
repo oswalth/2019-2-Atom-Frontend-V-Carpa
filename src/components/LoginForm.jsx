@@ -1,39 +1,35 @@
-import React, { useState } from 'react';
-import {
- Button, FormGroup, FormControl 
-} from 'react-bootstrap';
-import styles from '../styles/LoginForm.module.css';
-
+import React, { useState } from "react";
+import { Button, FormGroup, FormControl } from "react-bootstrap";
 
 export function Login(props) {
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const { login } = props;
+  const [username, setusername] = useState("");
+  const [password, setPassword] = useState("");
 
   function validateForm() {
-    return email.length > 0 && password.length > 0;
+    return username.length > 0 && password.length > 0;
   }
 
   function handleSubmit(event) {
     event.preventDefault();
+    login(username, password);
   }
 
   return (
-    <div className={styles.Login}>
+    <div className="Login">
       <form onSubmit={handleSubmit}>
-        <FormGroup controlId="email" bsSize="large">
-          <label>Email</label>
+        <FormGroup controlId="username" bsSize="large">
           <FormControl
             autoFocus
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={username}
+            onChange={e => setusername(e.target.value)}
           />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">
-          <label>Password</label>
           <FormControl
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             type="password"
           />
         </FormGroup>

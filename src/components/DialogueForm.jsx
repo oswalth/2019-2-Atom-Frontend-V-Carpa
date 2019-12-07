@@ -9,21 +9,37 @@ import MyContext from './MyContext.Context';
 
 // eslint-disable-next-line import/prefer-default-export
 export function DialogueForm(props) {
-  const { chats } = props;
-
+  const { chats, user } = props;
+  let chatImg = "https://image.flaticon.com/icons/svg/190/190588.svg";
   let dialogues = [];
   if (chats.length === 0) {
     dialogues = <div className={styles.empty}>No messages yet</div>;
   } else {
     chats.forEach((chat) => {
-      const dialogueItem = <DialogueItem chat={chat}/>;
+      let chatTitle = chat.title;
+      if (chat.members.length === 2) {
+        chat.members.forEach((member) => {
+          if (user.username !== member.username) {
+            chatTitle = "@" + member.username;
+            chatImg = member.avatar || chatImg;
+          }
+        })
+      }
+      const dialogueItem = <DialogueItem 
+                            chat={chat} 
+                            chatTitle={chatTitle}
+                            chatImg={chatImg}/>;
       dialogues.push(dialogueItem);
     });
   }
 
   return (
         <div className={styles.dialogues}>
-            <DialoguesHeader />
+            <MyContext.Consumer>
+              {(value) => (
+                <DialoguesHeader logout={value.logout.bind(value)}/>
+              )}
+            </MyContext.Consumer>
             <div className={styles.dialogueList}>
                 {dialogues}
             </div>
