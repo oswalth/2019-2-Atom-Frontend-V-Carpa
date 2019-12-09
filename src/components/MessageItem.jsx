@@ -13,11 +13,15 @@ export function MessageItem(props) {
   const attachmentsToRender = [];
   if ('attachments' in props.inner) {
     const { attachments } = props.inner;
-    isAttached = true;
-    attachments.list.forEach((attachment) => {
-      const attachmentItem = <Attachment type={attachments.type} attachment={attachment}/>;
-      attachmentsToRender.push(attachmentItem);
+    if ('list' in attachments){
+      isAttached = true;
+      const keys = Object.keys(attachments.list)
+      attachments.list.forEach((attachment) => {
+        const attachmentItem = <Attachment type={attachments.type} attachment={attachment}/>;
+        attachmentsToRender.push(attachmentItem);
     });
+    }
+    
   }
   const amISender = sender === user.id;
   return (

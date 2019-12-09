@@ -28,15 +28,9 @@ export function MessageForm(props) {
         }
     })
   }
-  console.log(chatImg)
+  
 
   const dragOver = (event) => {
-    /* console.log(event.dataTransfer.files);
-    if (event.dataTransfer.files[0].type.split('\\')[0] == 'image') {
-        isImage = true;
-    } else {
-        isImage = false;
-    } */
     event.preventDefault();
     event.stopPropagation();
     setDragActive(true);

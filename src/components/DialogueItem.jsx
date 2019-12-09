@@ -9,7 +9,6 @@ import MyContext from './MyContext.Context';
 
 export function DialogueItem(props) {
   const { chat, chatTitle, chatImg } = props;
-  console.log(chatImg)
   let formattedTime = null;
   const empty = 'No messages yet';
   if (chat.last_message !== null){

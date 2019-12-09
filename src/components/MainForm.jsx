@@ -22,10 +22,12 @@ export class MainForm extends React.Component {
     this.state = {
       chats: [],
       messages: {},
+      attachments: {},
       chatCounter: null,
       user: null,
       currentDialogue: null,
       mediaRecorder: null,
+      ChatFormStyle: null,
       frameStyles: {
         MessageForm: null,
         Profile: null,
@@ -43,11 +45,13 @@ export class MainForm extends React.Component {
         await axios.get('http://127.0.0.1:8000/api/events/delievered/')
         events.forEach((event) => {
           const newMessage = event.message;
+          console.log(newMessage)
           this.messageHandler(
             newMessage.content,
             newMessage.added_at,
             newMessage.chat,
             newMessage.sender,
+            (newMessage.has_attachment && newMessage.attachments)
           )
         })
       })
@@ -98,9 +102,14 @@ export class MainForm extends React.Component {
   loadChats() {
     axios.get('http://127.0.0.1:8000/api/chats/')
     .then(res => {
-      this.setState({chats: res.data})
-      this.state.chats.forEach((chat) => {
-        this.loadMessages(chat.id)
+      const chats = {}
+      res.data.forEach((chat) => {
+        chats[chat.id] = chat
+      })
+      this.setState({chats: chats})
+      const keys = Object.keys(chats)
+      keys.forEach((key) => {
+        this.loadMessages(chats[key].id)
       })
     })
   }
@@ -111,6 +120,7 @@ export class MainForm extends React.Component {
       const messages = this.state.messages;
       messages[chatId] = res.data.messages;
       this.setState({messages: messages})
+      console.log(this.state.messages)
     })
   }
   async requireRecorder() {
@@ -162,70 +172,105 @@ export class MainForm extends React.Component {
     sender=null,
     attachments = null, 
     ) {
-    let { currentDialogue, messages, user } = this.state;
-    let isAttached = false;
-    if (!messages) {
-      messages = {};
-    }
-    if (chatId) {
-      currentDialogue = chatId;
-      messages[currentDialogue - 1] = [];
-    }
-    const message = {
-      content: value,
-      added_at: chatTimestamp || new Date(),
-      sender: sender || user.id
-    };
-    if (attachments) {
-      message.attachments = attachments;
-      isAttached = true;
-
-      const data = new FormData();
-      data.append(Attr.type, attachments.file);
-
-      fetch('https://tt-front.now.sh/upload', {
-        method: 'POST',
-        body: data,
-      }).then(() => {
-        // pass
-      }).catch(console.log);
-    }
-    messages[currentDialogue].splice(0,0, message);
-    this.setState(messages);
-    if (!sender){
-      axios.post(`http://127.0.0.1:8000/api/messages/`, {
-        content: value,
-        chat: {
-          id: currentDialogue
-        }
-      })
-    }
+      console.log(attachments)
+      let { currentDialogue, messages, user } = this.state;
     
-    if (!chatId) {
-      this.setLastMessage();
+      let isAttached = false;
+      if (!messages) {
+        messages = {};
+      }
+      if (chatId) {
+        currentDialogue = chatId;
+      }
+      const message = {
+        content: value,
+        added_at: chatTimestamp || new Date(),
+        sender: sender || user.id
+      };
+      
+      if (attachments) {
+        message.attachments = attachments;
+        isAttached = true;  
+      }
+      
+      messages[currentDialogue].splice(0,0, message);
+      this.setState(messages);
+  
+      if (!sender){
+        axios.post(`http://127.0.0.1:8000/api/messages/`, {
+          content: value || "Attachment",
+          has_attachment: isAttached,
+          chat: {
+            id: currentDialogue
+          },
+        })
+        .then((res) => {
+          if (isAttached) {
+            
+            attachments.list.forEach((attachment) => {
+              const postBody = new FormData()
+              let file;
+              postBody.append("content", attachment.file)
+              postBody.append("chat", currentDialogue)
+              postBody.append("message", res.data.id)
+              axios.post(`http://127.0.0.1:8000/api/attachments/`, postBody)
+            })
+            
+          }
+        })
+      }
+      
+      if (!chatId) {
+        this.setLastMessage();
+      }
+  }
+
+  openPopUp(){
+    if (!this.state.ChatFormStyle) {
+      this.setState({ ChatFormStyle: { display: 'block' } });
+    } else{
+      this.setState({ ChatFormStyle: null })
     }
   }
 
-  createHandler() {
+  createHandler(membersNames, title=null) {
     // eslint-disable-next-line prefer-const
-    let { chats, chatCounter } = this.state;
-    const name = prompt("Enter person's name");
-    // const text = prompt('Write a message');
-    // chatCounter += 1;
-    // this.messageHandler(text, new Date(), chatCounter);
-    // const chatMsgs = this.state.messages[chatCounter - 1];
-    // chats.push({
-    //   id: chatCounter,
-    //   title: name,
-    //   is_group: false,
-    //   host: 'Vladimir Carpa',
-    //   lastMessage: chatMsgs[chatMsgs.length - 1],
-
-    // });
-    this.setState({ chats, chatCounter });
-    this.setLastMessage(chatCounter);
-    localStorage.setItem('chats', JSON.stringify(chats));
-    localStorage.setItem('chatCounter', JSON.stringify(chatCounter));
+    let { chats } = this.state;
+    const members = []
+    let isGroup = false;
+    if (membersNames.length !== 1){
+      isGroup = true
+    }
+    membersNames.forEach((member) => {
+      axios.get(`http://127.0.0.1:8000/api/users/${member}/`)
+      .then((res) => {
+        members.push({
+          username : res.data.username,
+          avatar: res.data.avatar,
+          last_read_message: null
+        })
+      })
+    })
+    chats["tmp"] = {
+      id: "tmp",
+      title: title,
+      members: members,
+      last_message: null,
+      topic: "no topic"
+    }
+    const postMembers = [{"username": this.state.user.username}]
+    membersNames.forEach((member) => {
+      postMembers.push({"username": member})
+    })
+    axios.post(`http://127.0.0.1:8000/api/chats/create/`, {
+      title: title || "Private chat",
+      is_group_chat: isGroup,
+      topic: "no topic",
+      members: postMembers
+    })
+    .then(() => {
+      this.setState({chats: chats})
+    })
   }
 
   setLastMessage(chatId = null) {
@@ -235,9 +280,8 @@ export class MainForm extends React.Component {
       currentDialogue = chatId;
     }
     const chatMessages = messages[currentDialogue];
-    chats[currentDialogue - 1].lastMessage = chatMessages[chatMessages.length - 1];
-    this.setState(chats);
-    localStorage.setItem('chats', JSON.stringify(chats));
+    chats[currentDialogue].last_message = chatMessages[0];
+    this.setState({chats: chats});
   }
 
   openProfile() {
@@ -277,13 +321,15 @@ export class MainForm extends React.Component {
             <DialogueForm
               chats={state.chats}
               user={state.user}
+              chatFormStyle={state.ChatFormStyle}
+              createHandler={this.createHandler.bind(this)}
             />
             <MessageForm
                 redirect={this.props.history}
                 style={state.frameStyles.MessageForm}
                 user={state.user}
                 chatId={state.currentDialogue}
-                details={state.currentDialogue && state.chats[state.currentDialogue - 1]}
+                details={state.currentDialogue && state.chats[state.currentDialogue]}
                 messages={state.currentDialogue
                     && state.messages[state.currentDialogue]}
             />

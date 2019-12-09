@@ -25,7 +25,7 @@ export function FormInput(props) {
     const value = input.current.value.trim();
     if (attachments || value !== '') {
       input.current.value = '';
-      messageHandler(value, null, null, attachments);
+      messageHandler(value, null, null, null, attachments);
     }
     setAttachments(null);
   };
@@ -124,7 +124,7 @@ export function FormInput(props) {
     attachmentsBoxStyles = {
       height: '100px',
     };
-
+    console.log(attachments.list)
     list = attachments.list.map((addition, i) => (
         <Attachment
           key={i}
