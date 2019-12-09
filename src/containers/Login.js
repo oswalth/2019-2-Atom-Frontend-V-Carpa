@@ -2,6 +2,10 @@
 import React from 'react';
 import {
   Form,
+  Icon,
+  Spin,
+  Input,
+  Button,
 } from 'antd';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
