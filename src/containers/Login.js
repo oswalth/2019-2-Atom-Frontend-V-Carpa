@@ -1,19 +1,22 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
-import { Form, Icon, Input, Button, Spin } from 'antd';
+import {
+  Form,
+} from 'antd';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import * as actions from "../store/actions/auth";
+import * as actions from '../store/actions/auth';
 
 
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 
 class NormalLoginForm extends React.Component {
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.onAuth(values.username, values.password)
+        this.props.onAuth(values.username, values.password);
       }
     });
     this.props.history.push('/chats');
@@ -23,23 +26,22 @@ class NormalLoginForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
     let errorMessage = null;
     if (this.props.error) {
-        errorMessage = (
+      errorMessage = (
             <p>{this.props.error.message}</p>
-        );
+      );
     }
     return (
       <div>
           {errorMessage}
           {
-            this.props.loading ?
+            this.props.loading
 
-            <Spin indicator={antIcon} />
+              ? <Spin indicator={antIcon} />
 
-            :
-            <Form onSubmit={this.handleSubmit} className="login-form">
+              : <Form onSubmit={this.handleSubmit} className="login-form">
                 <Form.Item>
                 {getFieldDecorator('username', {
-                    rules: [{ required: true, message: 'Please input your username!' }],
+                  rules: [{ required: true, message: 'Please input your username!' }],
                 })(
                     <Input
                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -49,7 +51,7 @@ class NormalLoginForm extends React.Component {
                 </Form.Item>
                 <Form.Item>
                 {getFieldDecorator('password', {
-                    rules: [{ required: true, message: 'Please input your Password!' }],
+                  rules: [{ required: true, message: 'Please input your Password!' }],
                 })(
                     <Input
                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -59,11 +61,11 @@ class NormalLoginForm extends React.Component {
                 )}
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType='submit' style={{marginRight: '10px'}}>
+                    <Button type="primary" htmlType='submit' style={{ marginRight: '10px' }}>
                         Login
                     </Button>
-                    Or 
-                    <NavLink style={{marginRight: '10px'}} to='/signup/'> Signup
+                    Or
+                    <NavLink style={{ marginRight: '10px' }} to='/signup/'> Signup
                     </NavLink>
                 </Form.Item>
             </Form>
@@ -75,18 +77,13 @@ class NormalLoginForm extends React.Component {
 
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
 
-const mapStateToProps = (state) => {
-  console.log(state)
-    return {
-        loading: state.loading,
-        error: state.error,
-    }
-}
+const mapStateToProps = (state) => ({
+  loading: state.loading,
+  error: state.error,
+});
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onAuth: (username, password) => dispatch(actions.authLogin(username, password))
-    }
-}
+const mapDispatchToProps = (dispatch) => ({
+  onAuth: (username, password) => dispatch(actions.authLogin(username, password)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedNormalLoginForm);

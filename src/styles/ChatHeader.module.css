@@ -28,9 +28,12 @@
 .avatar{
     height: 30px;
     width: 30px;
-    margin: 5px 15px;   
-    border-radius: 50%;      
-    background: url(https://image.flaticon.com/icons/svg/190/190588.svg) no-repeat center center;
+    margin: 5px;
+    border-radius: 50%; 
+    flex-shrink: 0;
+    flex-grow: 0;
+    background-size: 100%;
+    background-image: url(https://image.flaticon.com/icons/svg/190/190588.svg)
 }
 
 .senderInfo {

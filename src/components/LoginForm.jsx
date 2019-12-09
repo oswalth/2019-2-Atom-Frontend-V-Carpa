@@ -1,29 +1,43 @@
-
-import { Link } from "react-router-dom";
-import React from 'react';
-import '../styles/LoginForm.modules.css'
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
 
 
-export default function LoginForm() {
-  const [name, setName] = React.useState('');
-  const [room, setRoom] = React.useState('');
+export function Login(props) {
+  const { login } = props;
+  const [username, setusername] = useState('');
+  const [password, setPassword] = useState('');
 
+  function validateForm() {
+    return username.length > 0 && password.length > 0;
+  }
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    login(username, password);
+  }
 
   return (
-    <div className="joinOuterContainer">
-      <div className="joinInnerContainer">
-        <h1 className="heading">Join</h1>
-        <div>
-          <input placeholder="Name" className="joinInput" type="text" onChange={(event) => setName(event.target.value)} />
-        </div>
-        <div>
-          <input placeholder="Room" className="joinInput mt-20" type="text" onChange={(event) => setRoom(event.target.value)} />
-        </div>
-        <Link onClick={e => (!name || !room) ? e.preventDefault() : null} to={`/chat?name=${name}&room=${room}`}>
-          <button className={'button mt-20'} type="submit">Sign In</button>
-        </Link>
-      </div>
+    <div className="Login">
+      <form onSubmit={handleSubmit}>
+        <FormGroup controlId="username" bsSize="large">
+          <FormControl
+            autoFocus
+            type="text"
+            value={username}
+            onChange={(e) => setusername(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup controlId="password" bsSize="large">
+          <FormControl
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+          />
+        </FormGroup>
+        <Button block bsSize="large" disabled={!validateForm()} type="submit">
+          Login
+        </Button>
+      </form>
     </div>
   );
 }
