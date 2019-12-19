@@ -1,4 +1,5 @@
 import React from 'react'
+import findMe from '../utils/findMe'
 
 
 const Form = (props) => {
@@ -12,14 +13,6 @@ const Form = (props) => {
         loadWeather(arg, 'byCity')
     } 
     
-
-    const byGeolocation = () => {
-        navigator.geolocation.getCurrentPosition((position) => {
-            const method = 'byGeolocation'
-            console.log(method)
-            loadWeather(position.coords, method)
-        })
-    }
     return (
         <div className='container'>
             <form onSubmit={processSubmit}>
@@ -31,7 +24,12 @@ const Form = (props) => {
                 <button>+</button>
                 <button 
                     type='button'
-                    onClick={byGeolocation}
+                    onClick={() => {
+                        findMe((position) => {
+                            const method = 'byGeolocation'
+                            loadWeather(position.coords, method)
+                        })
+                    }}
                 >Geo</button>
             </form>
         </div>

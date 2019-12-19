@@ -20,8 +20,6 @@ class MainForm extends React.Component {
     }
 
     render() {
-        this.props.loadWeather()
-        console.log(this.props)
         return(
             <div className='container'>
                 <Form loadWeather={this.props.loadWeather}/>
