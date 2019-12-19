@@ -15,7 +15,7 @@ const DetailView = (props) => {
         .then((res) => {
           setData(res.data)
         })
-    }, []) 
+    }, [cityId]) 
 
     if (data === null) {
         return null;    
