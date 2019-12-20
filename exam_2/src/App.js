@@ -12,7 +12,7 @@ class App extends React.Component{
   render() {
     return (
         <div className="App">
-          <Router>
+          <Router basename={'https://oswalth.github.io/2019-2-Atom-Frontend-V-Carpa/'}>
             <Route exact path='/' component={Main}/> 
             <Route path='/location/:id' component={DetailView}/>
           </Router>
