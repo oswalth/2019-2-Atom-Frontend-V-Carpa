@@ -10,11 +10,12 @@ import { connect } from 'react-redux';
 class App extends React.Component{
 
   render() {
+    console.log()
     return (
-        <div className="App">
-          <Router basename={'https://oswalth.github.io/2019-2-Atom-Frontend-V-Carpa/'}>
-            <Route exact path='/' component={Main}/> 
-            <Route path='/location/:id' component={DetailView}/>
+        <div className="App">   
+          <Router>
+            <Route exact path={process.env.PUBLIC_URL + '/'} component={Main}/> 
+            <Route path={process.env.PUBLIC_URL + '/location/:id'} component={DetailView}/>
           </Router>
         </div>      
     );
