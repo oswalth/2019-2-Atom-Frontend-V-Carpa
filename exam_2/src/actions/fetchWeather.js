@@ -3,7 +3,7 @@ import {API_KEY} from '../utils/apiKey'
 
 
 export const fetchWeather = (arg, method) => (dispatch) => {
-    const prefix = `http://api.openweathermap.org/data/2.5/weather?appid=${API_KEY  }&`
+    const prefix = `https://api.openweathermap.org/data/2.5/weather?appid=${API_KEY  }&`
     let postfix = '';
     if (method === 'byGeolocation') {
         postfix = `lat=${arg.latitude}&lon=${arg.longitude}`

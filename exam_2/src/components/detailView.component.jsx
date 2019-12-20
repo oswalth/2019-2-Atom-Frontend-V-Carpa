@@ -11,7 +11,7 @@ const DetailView = (props) => {
     const [data, setData] = useState(null)
     const cityId = props.match.params.id;
     useEffect(() => {
-        axios(`http://api.openweathermap.org/data/2.5/forecast?id=${cityId}&appid=${API_KEY}`)
+        axios(`https://api.openweathermap.org/data/2.5/forecast?id=${cityId}&appid=${API_KEY}`)
         .then((res) => {
           setData(res.data)
         })
