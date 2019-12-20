@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
 import styles from '../styles/FormInput.module.css';
@@ -11,8 +14,9 @@ export function FormInput(props) {
     messageHandler,
     requireRecorder,
     mediaRecorder,
+    chatID,
   } = props;
-  const [dragFiles, setDragFiles] = props.dragFiles;
+  const [dragFiles, setDragFiles] = React.useState(props.dragFiles);
   const [dropOutStyle, setDropOutStyle] = React.useState(null);
   const [attachments, setAttachments] = React.useState(null);
   const [sendButtonType, setSendButtonType] = React.useState('mic');
@@ -25,7 +29,7 @@ export function FormInput(props) {
     const value = input.current.value.trim();
     if (attachments || value !== '') {
       input.current.value = '';
-      messageHandler(value, null, null, attachments);
+      messageHandler(value, null, null, null, attachments);
     }
     setAttachments(null);
   };
@@ -124,7 +128,6 @@ export function FormInput(props) {
     attachmentsBoxStyles = {
       height: '100px',
     };
-
     list = attachments.list.map((addition, i) => (
         <Attachment
           key={i}

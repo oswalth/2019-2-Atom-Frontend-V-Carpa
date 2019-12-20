@@ -8,27 +8,39 @@ import MyContext from './MyContext.Context';
 
 
 export function DialogueItem(props) {
-  const { chat } = props;
-  const formattedTime = new Date(chat.lastMessage.time);
+  const { chat, chatTitle, chatImg } = props;
+  let formattedTime = null;
+  const empty = 'No messages yet';
+  if (chat.last_message !== null) {
+    formattedTime = new Date(chat.last_message.added_at);
+  }
   return (
         <MyContext.Consumer>
             {(value) => (
                 <div className={styles.dialogue}>
                     <Link to={`/profile/${chat.id}`} style={{ textDecoration: 'none' }}>
-                        <div className={styles.avatar} />
+                        <div className={styles.avatar} style={{ backgroundImage: `url(${chatImg})` }}/>
                     </Link>
                     <div className={styles.wrapper}>
-                        <Link to={`/chat/${chat.id}`} style={{ textDecoration: 'none', color: 'unset' }}>
+                        <Link to={`/chats/${chat.id}`} style={{ textDecoration: 'none', color: 'unset' }}>
                             <div className={styles.text}>
-                                <div className={styles.name}>{chat.title}</div>
-                                <div className={styles.time}>{formattedTime.toLocaleString('ru', {
-                                  hour: 'numeric',
-                                  minute: 'numeric',
-                                })}</div>
+                                <div className={styles.name}>{chatTitle}</div>
+                                <div className={styles.time}>{
+                                    formattedTime
+                                      ? formattedTime.toLocaleString('ru', {
+                                        hour: 'numeric',
+                                        minute: 'numeric',
+                                      })
+                                      : ''
+                                }</div>
                             </div>
                             <div className={styles.info}>
-                                <div className={styles.message}>{chat.lastMessage.content || 'Attachment'}</div>
-                                <div className={styles.status}>{chat.lastMessage.status}</div>
+                                <div className={styles.message}>{
+                                    chat.last_message
+                                      ? chat.last_message.content || 'Attachment'
+                                      : empty
+                                }</div>
+                                <div className={styles.status}>Ok</div>
                             </div>
                         </Link>
                     </div>

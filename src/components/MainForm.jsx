@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-console */
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-unused-vars */
@@ -5,9 +7,11 @@
 /* eslint-disable import/named */
 /* eslint-disable no-alert */
 import React from 'react';
+import axios from 'axios';
 import { DialogueForm } from './DialogueForm';
 import { MessageForm } from './MessageForm';
 import { Profile } from './Profile';
+import { Login } from './LoginForm';
 import MyContext from './MyContext.Context';
 import { recordStream } from '../lib/recordStream';
 import styles from '../styles/MainForm.module.css';
@@ -16,13 +20,15 @@ import styles from '../styles/MainForm.module.css';
 export class MainForm extends React.Component {
   constructor(props) {
     super(props);
-    const storage = this.parseStorage();
     this.state = {
-      chats: storage.chats,
-      messages: storage.messages,
-      chatCounter: storage.chatCounter,
+      chats: [],
+      messages: {},
+      attachments: {},
+      chatCounter: null,
+      user: null,
       currentDialogue: null,
       mediaRecorder: null,
+      ChatFormStyle: null,
       frameStyles: {
         MessageForm: null,
         Profile: null,
@@ -30,19 +36,93 @@ export class MainForm extends React.Component {
     };
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  parseStorage() {
-    const storage = {
-      chats: JSON.parse(localStorage.getItem('chats')),
-      messages: JSON.parse(localStorage.getItem('messages')),
-      chatCounter: JSON.parse(localStorage.getItem('chatCounter')),
-    };
-    if (!storage.chats) {
-      storage.chats = [];
-      storage.messages = {};
-      storage.chatCounter = 0;
+  componentDidMount() {
+    this.trySignIn();
+    this.loadChats();
+    setInterval(() => {
+      axios.get('http://127.0.0.1:8000/api/events/')
+        .then(async (res) => {
+          const events = res.data;
+          await axios.get('http://127.0.0.1:8000/api/events/delievered/');
+          events.forEach((event) => {
+            const newMessage = event.message;
+            console.log(newMessage);
+            this.messageHandler(
+              newMessage.content,
+              newMessage.added_at,
+              newMessage.chat,
+              newMessage.sender,
+              (newMessage.has_attachment && newMessage.attachments),
+            );
+          });
+        });
+    }, 500);
+  }
+
+  trySignIn() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.setState({ user: JSON.parse(localStorage.getItem('user')) });
+      axios.defaults.headers = {
+        'Content-type': 'application/json',
+        Authorization: token,
+      };
     }
-    return storage;
+  }
+
+  login(username, password) {
+    axios.post('http://127.0.0.1:8000/rest-auth/login/', {
+      username,
+      password,
+    })
+      .then((res) => {
+        const token = res.data.key;
+        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        localStorage.setItem('token', token);
+        localStorage.setItem('expirationDate', expirationDate);
+        this.getUserInfo(username);
+      });
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('expirationDate');
+    localStorage.removeItem('user');
+    this.setState({ user: null });
+  }
+
+  getUserInfo(username) {
+    axios.get(`http://127.0.0.1:8000/api/users/${username}`)
+      .then((res) => {
+        localStorage.setItem('user', JSON.stringify(res.data));
+        this.setState({ user: res.data });
+      });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  loadChats() {
+    axios.get('http://127.0.0.1:8000/api/chats/')
+      .then((res) => {
+        const chats = {};
+        res.data.forEach((chat) => {
+          chats[chat.id] = chat;
+        });
+        this.setState({ chats });
+        const keys = Object.keys(chats);
+        keys.forEach((key) => {
+          this.loadMessages(chats[key].id);
+        });
+      });
+  }
+
+  loadMessages(chatId) {
+    axios.get(`http://127.0.0.1:8000/api/chats/${chatId}`)
+      .then((res) => {
+        const { messages } = this.state;
+        messages[chatId] = res.data.messages;
+        this.setState({ messages });
+        console.log(this.state.messages);
+      });
   }
 
   async requireRecorder() {
@@ -56,6 +136,18 @@ export class MainForm extends React.Component {
     }).catch((err) => {
       throw new Error(err);
     });
+  }
+
+  async loadChatMessages(chatId) {
+    const { state } = this;
+    await axios.get(`http://localhost:8000/api/chats/${chatId}/`)
+      .then((res) => {
+        state.messages[chatId] = res.data.messages;
+      });
+    if (state !== this.state) {
+      this.setState({ messages: state.messages });
+    }
+    console.log(this.state.messages[this.state.currentDialogue]);
   }
 
   openDialogue(chatId) {
@@ -87,66 +179,110 @@ export class MainForm extends React.Component {
     }
   }
 
-  messageHandler(value, chatTimestamp = null, chatId = null, attachments = null) {
+  messageHandler(
+    value,
+    chatTimestamp = null,
+    chatId = null,
+    sender = null,
+    attachments = null,
+  ) {
+    console.log(attachments);
     let { currentDialogue, messages } = this.state;
+    const { user } = this.state;
     let isAttached = false;
     if (!messages) {
       messages = {};
     }
     if (chatId) {
       currentDialogue = chatId;
-      messages[currentDialogue - 1] = [];
     }
     const message = {
-      id: 'test',
       content: value,
-      amISender: true,
-      time: chatTimestamp || new Date(),
-      status: 'sent',
+      added_at: chatTimestamp || new Date(),
+      sender: sender || user.id,
     };
+
     if (attachments) {
       message.attachments = attachments;
       isAttached = true;
-
-      const data = new FormData();
-      data.append(Attr.type, attachments.file);
-
-      fetch('https://tt-front.now.sh/upload', {
-        method: 'POST',
-        body: data,
-      }).then(() => {
-        // pass
-      }).catch(console.log);
     }
-    messages[currentDialogue - 1].push(message);
+
+    messages[currentDialogue].splice(0, 0, message);
     this.setState(messages);
+
+    if (!sender) {
+      axios.post('http://127.0.0.1:8000/api/messages/', {
+        content: value || 'Attachment',
+        has_attachment: isAttached,
+        chat: {
+          id: currentDialogue,
+        },
+      })
+        .then((res) => {
+          if (isAttached) {
+            attachments.list.forEach((attachment) => {
+              const postBody = new FormData();
+              let file;
+              postBody.append('content', attachment.file);
+              postBody.append('chat', currentDialogue);
+              postBody.append('message', res.data.id);
+              axios.post('http://127.0.0.1:8000/api/attachments/', postBody);
+            });
+          }
+        });
+    }
+
     if (!chatId) {
       this.setLastMessage();
     }
-
-    localStorage.setItem('messages', JSON.stringify(messages));
   }
 
-  createHandler() {
-    // eslint-disable-next-line prefer-const
-    let { chats, chatCounter } = this.state;
-    const name = prompt("Enter person's name");
-    const text = prompt('Write a message');
-    chatCounter += 1;
-    this.messageHandler(text, new Date(), chatCounter);
-    const chatMsgs = this.state.messages[chatCounter - 1];
-    chats.push({
-      id: chatCounter,
-      title: name,
-      is_group: false,
-      host: 'Vladimir Carpa',
-      lastMessage: chatMsgs[chatMsgs.length - 1],
+  openPopUp() {
+    if (!this.state.ChatFormStyle) {
+      this.setState({ ChatFormStyle: { display: 'block' } });
+    } else {
+      this.setState({ ChatFormStyle: null });
+    }
+  }
 
+  createHandler(membersNames, title = null) {
+    // eslint-disable-next-line prefer-const
+    let { chats } = this.state;
+    const members = [];
+    let isGroup = false;
+    if (membersNames.length !== 1) {
+      isGroup = true;
+    }
+    membersNames.forEach((member) => {
+      axios.get(`http://127.0.0.1:8000/api/users/${member}/`)
+        .then((res) => {
+          members.push({
+            username: res.data.username,
+            avatar: res.data.avatar,
+            last_read_message: null,
+          });
+        });
     });
-    this.setState({ chats, chatCounter });
-    this.setLastMessage(chatCounter);
-    localStorage.setItem('chats', JSON.stringify(chats));
-    localStorage.setItem('chatCounter', JSON.stringify(chatCounter));
+    chats.tmp = {
+      id: 'tmp',
+      title,
+      members,
+      last_message: null,
+      topic: 'no topic',
+    };
+    const postMembers = [{ username: this.state.user.username }];
+    membersNames.forEach((member) => {
+      postMembers.push({ username: member });
+    });
+    axios.post('http://127.0.0.1:8000/api/chats/create/', {
+      title: title || 'Private chat',
+      is_group_chat: isGroup,
+      topic: 'no topic',
+      members: postMembers,
+    })
+      .then(() => {
+        this.setState({ chats });
+      });
   }
 
   setLastMessage(chatId = null) {
@@ -155,10 +291,9 @@ export class MainForm extends React.Component {
     if (chatId) {
       currentDialogue = chatId;
     }
-    const chatMessages = messages[currentDialogue - 1];
-    chats[currentDialogue - 1].lastMessage = chatMessages[chatMessages.length - 1];
-    this.setState(chats);
-    localStorage.setItem('chats', JSON.stringify(chats));
+    const chatMessages = messages[currentDialogue];
+    chats[currentDialogue].last_message = chatMessages[0];
+    this.setState({ chats });
   }
 
   openProfile() {
@@ -172,13 +307,15 @@ export class MainForm extends React.Component {
   }
 
   pageRouter() {
+    console.log(this.props);
     const path = this.props.location.pathname;
+
     switch (true) {
-      case /chat\/\d\/?$/.test(path):
+      case /chats\/\d+\/?$/.test(path):
         const chatId = parseInt(path.match(/\d+/), 10);
         this.openDialogue(chatId);
         break;
-      case /profile\/\d\/?$/.test(path):
+      case /profile\/\d+\/?$/.test(path):
         this.openProfile();
         break;
       default:
@@ -192,18 +329,27 @@ export class MainForm extends React.Component {
     const { state } = this;
     return (
       <MyContext.Provider value={this}>
-          <div className={styles.container}>
+        { state.user
+          ? <div className={styles.container}>
             <DialogueForm
               chats={state.chats}
+              user={state.user}
+              chatFormStyle={state.ChatFormStyle}
+              createHandler={this.createHandler.bind(this)}
             />
             <MessageForm
+                redirect={this.props.history}
                 style={state.frameStyles.MessageForm}
-                details={state.currentDialogue && state.chats[state.currentDialogue - 1]}
+                user={state.user}
+                chatId={state.currentDialogue}
+                details={state.currentDialogue && state.chats[state.currentDialogue]}
                 messages={state.currentDialogue
-                    && state.messages[state.currentDialogue - 1]}
+                    && state.messages[state.currentDialogue]}
             />
             <Profile style={state.frameStyles.Profile}/>
           </div>
+          : <Login login={this.login.bind(this)}></Login>
+      }
       </MyContext.Provider>
     );
   }

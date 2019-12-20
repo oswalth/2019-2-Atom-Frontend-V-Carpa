@@ -29,3 +29,12 @@
     padding-right: 10px;
     background: url(https://image.flaticon.com/icons/svg/149/149309.svg) no-repeat center center;
 }  
+
+.logOutButton{
+    height: 20px;
+    width: 20px;
+    margin: 5px 15px;
+    padding-right: 10px;
+    background: url(https://image.flaticon.com/icons/svg/992/992680.svg) no-repeat center center;
+}  
+

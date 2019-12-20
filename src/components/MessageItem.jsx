@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/prefer-default-export */
@@ -6,21 +7,31 @@ import styles from '../styles/MessageItem.module.css';
 
 
 export function MessageItem(props) {
-  const { content, time } = props.inner;
-  const formattedTime = new Date(time);
+  const { content, added_at, sender } = props.inner;
+  const { user } = props;
+  const formattedTime = new Date(added_at);
   let isAttached = false;
   const attachmentsToRender = [];
   if ('attachments' in props.inner) {
     const { attachments } = props.inner;
-    isAttached = true;
-    attachments.list.forEach((attachment) => {
-      const attachmentItem = <Attachment type={attachments.type} attachment={attachment}/>;
-      attachmentsToRender.push(attachmentItem);
-    });
+    if ('list' in attachments) {
+      isAttached = true;
+      const keys = Object.keys(attachments.list);
+      attachments.list.forEach((attachment) => {
+        const attachmentItem = <Attachment type={attachments.type} attachment={attachment}/>;
+        attachmentsToRender.push(attachmentItem);
+      });
+    }
   }
+  const amISender = sender === user.id;
   return (
         <div className={styles.messageWrap}>
-            <div className={styles.messageItem}>
+            <div
+              className={styles.messageItem}
+              style={amISender
+                ? { float: 'right' }
+                : { float: 'left' }}
+              >
                 <div className={styles.inner}>
                   <div className={styles.message}>
                     {content}

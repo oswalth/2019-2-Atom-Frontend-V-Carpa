@@ -1,12 +1,14 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import styles from '../styles/CreateDialogueButton.module.css';
 
 
 export function CreateDialogueButton(props) {
-  const { createHandler } = props;
+  const { createChat } = props;
   return (
         <button
-            onClick={createHandler} className={styles.createDialogueButton}
+          onClick={createChat}
+          className={styles.createDialogueButton}
         />
   );
 }

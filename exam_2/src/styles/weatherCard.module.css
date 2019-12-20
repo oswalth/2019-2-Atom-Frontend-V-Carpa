@@ -1,0 +1,30 @@
+.cardContainer {
+    font-family: sans-serif;
+    color: #000;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    padding: 6px 0px 6px 0px;
+    border: 1px solid black;
+    background: rgb(231, 223, 223);
+    margin: 5px 0px 5px 0px;
+}
+
+.upper {
+    display: flex;
+    border-bottom: 0.5px solid lightgray;
+}
+
+.upperLeft {
+    display: flex;
+    flex-flow: column;
+}
+
+.upperRight {
+    display: flex;
+    flex-flow: column;
+
+}
