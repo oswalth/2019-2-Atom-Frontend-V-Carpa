@@ -1,0 +1,19 @@
+.wrapper {
+    display: flex;
+    flex-flow: column
+}
+
+.containerW{
+    display: flex;
+
+}
+
+.weatherList{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: column nowrap;
+    overflow-y: auto; 
+    max-width: 60%;
+    margin: auto;
+}
