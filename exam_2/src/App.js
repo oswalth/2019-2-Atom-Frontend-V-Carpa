@@ -13,9 +13,9 @@ class App extends React.Component{
     console.log()
     return (
         <div className="App">   
-          <Router>
-            <Route exact path={process.env.PUBLIC_URL + '/'} component={Main}/> 
-            <Route path={process.env.PUBLIC_URL + '/location/:id'} component={DetailView}/>
+          <Router basename={process.env.PUBLIC_URL}>
+            <Route exact path='/' component={Main}/> 
+            <Route path='/location/:id' component={DetailView}/>
           </Router>
         </div>      
     );
