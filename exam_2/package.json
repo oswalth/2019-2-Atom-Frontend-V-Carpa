@@ -1,5 +1,6 @@
 {
   "name": "weather",
+  "homepage": "https://oswalth.github.io/2019-2-Atom-Frontend-V-Carpa/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
