@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/2019-2-Atom-Frontend-V-Carpa/static/css/main.5948ed0a.chunk.css",
+    "main.js": "/2019-2-Atom-Frontend-V-Carpa/static/js/main.dde3320e.chunk.js",
+    "main.js.map": "/2019-2-Atom-Frontend-V-Carpa/static/js/main.dde3320e.chunk.js.map",
+    "runtime-main.js": "/2019-2-Atom-Frontend-V-Carpa/static/js/runtime-main.79e45abb.js",
+    "runtime-main.js.map": "/2019-2-Atom-Frontend-V-Carpa/static/js/runtime-main.79e45abb.js.map",
+    "static/js/2.bb846510.chunk.js": "/2019-2-Atom-Frontend-V-Carpa/static/js/2.bb846510.chunk.js",
+    "static/js/2.bb846510.chunk.js.map": "/2019-2-Atom-Frontend-V-Carpa/static/js/2.bb846510.chunk.js.map",
+    "index.html": "/2019-2-Atom-Frontend-V-Carpa/index.html",
+    "precache-manifest.1f7c9690d8ea7d2fd6261dfee61ddf3b.js": "/2019-2-Atom-Frontend-V-Carpa/precache-manifest.1f7c9690d8ea7d2fd6261dfee61ddf3b.js",
+    "service-worker.js": "/2019-2-Atom-Frontend-V-Carpa/service-worker.js",
+    "static/css/main.5948ed0a.chunk.css.map": "/2019-2-Atom-Frontend-V-Carpa/static/css/main.5948ed0a.chunk.css.map",
+    "static/js/2.bb846510.chunk.js.LICENSE": "/2019-2-Atom-Frontend-V-Carpa/static/js/2.bb846510.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.79e45abb.js",
+    "static/js/2.bb846510.chunk.js",
+    "static/css/main.5948ed0a.chunk.css",
+    "static/js/main.dde3320e.chunk.js"
+  ]
+}
